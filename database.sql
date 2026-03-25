@@ -1,8 +1,7 @@
 -- Watch Showcase Database
 -- สร้าง database ก่อน: CREATE DATABASE watch_showcase CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS `watch_showcase` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `watch_showcase`;
+
 
 -- ตาราง admins
 CREATE TABLE `admins` (
