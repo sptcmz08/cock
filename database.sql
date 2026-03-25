@@ -93,9 +93,9 @@ INSERT INTO `admins` (`username`, `password`) VALUES
 
 -- Default categories
 INSERT INTO `categories` (`name`, `slug`, `icon`, `sort_order`) VALUES
-('Analog', 'analog', '⏱', 1),
-('Digital', 'digital', '🔢', 2),
-('Analog + Digital', 'both', '⌚', 3);
+('Analog', 'analog', 'A', 1),
+('Digital', 'digital', 'D', 2),
+('Analog + Digital', 'both', 'A+D', 3);
 
 -- Sample products
 INSERT INTO `products` (`name`, `brand`, `price`, `description`, `category_id`, `features`, `is_featured`, `sort_order`) VALUES
