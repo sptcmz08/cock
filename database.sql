@@ -1,8 +1,7 @@
 -- Watch Showcase Database
 -- สร้าง database ก่อน: CREATE DATABASE watch_showcase CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS `watch_showcase` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `watch_showcase`;
+
 
 -- ตาราง admins
 CREATE TABLE `admins` (
@@ -73,7 +72,7 @@ CREATE TABLE `products` (
 
 -- Default admin (password: admin123)
 INSERT INTO `admins` (`username`, `password`) VALUES 
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+('admin', '$2y$10$2CEcqp84H6Bz7z10wERxoewBwJ9FX/ZUPDWeCtdUwr3eJ5jZIBV2C');
 
 -- Sample products
 INSERT INTO `products` (`name`, `brand`, `price`, `description`, `type`, `features`, `is_featured`, `sort_order`) VALUES
