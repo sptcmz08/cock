@@ -80,8 +80,8 @@ function initFilterTabs() {
             const filter = tab.dataset.filter;
 
             cards.forEach((card, index) => {
-                const type = card.dataset.type;
-                const show = filter === 'all' || type === filter;
+                const category = card.dataset.category;
+                const show = filter === 'all' || category === filter;
 
                 if (show) {
                     card.style.display = '';
@@ -132,8 +132,15 @@ function openProductModal(productId) {
 
     // Badge
     const badge = overlay.querySelector('.modal-badge');
-    badge.className = 'modal-badge card-badge ' + data.type;
-    badge.textContent = getTypeLabel(data.type);
+    const catName = data.categoryName || '';
+    const catIcon = data.categoryIcon || '⌚';
+    if (catName) {
+        badge.className = 'modal-badge card-badge analog';
+        badge.textContent = catIcon + ' ' + catName;
+    } else {
+        badge.className = 'modal-badge card-badge';
+        badge.textContent = '';
+    }
 
     // Image
     const modalImg = overlay.querySelector('.modal-image');
@@ -179,14 +186,7 @@ function formatPrice(price) {
     return num.toLocaleString('th-TH');
 }
 
-function getTypeLabel(type) {
-    const labels = {
-        'analog': '⏱ Analog',
-        'digital': '🔢 Digital',
-        'both': '⌚ Analog + Digital'
-    };
-    return labels[type] || type;
-}
+
 
 /* ==================== Scroll Reveal ==================== */
 function initScrollReveal() {

@@ -68,7 +68,7 @@ function handleCreate($db) {
     $name = trim($_POST['name'] ?? '');
     $brand = trim($_POST['brand'] ?? '');
     $price = floatval($_POST['price'] ?? 0);
-    $type = $_POST['type'] ?? 'analog';
+    $category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
     $description = trim($_POST['description'] ?? '');
     $features = trim($_POST['features'] ?? '');
     $sort_order = intval($_POST['sort_order'] ?? 0);
@@ -80,15 +80,11 @@ function handleCreate($db) {
         return;
     }
 
-    if (!in_array($type, ['analog', 'digital', 'both'])) {
-        $type = 'analog';
-    }
-
     // Handle image
     $imageName = handleImageUpload();
 
-    $stmt = $db->prepare("INSERT INTO products (name, brand, price, description, type, features, image, is_featured, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$name, $brand, $price, $description, $type, $features, $imageName, $is_featured, $sort_order]);
+    $stmt = $db->prepare("INSERT INTO products (name, brand, price, description, category_id, features, image, is_featured, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$name, $brand, $price, $description, $category_id, $features, $imageName, $is_featured, $sort_order]);
 
     echo json_encode(['success' => true, 'message' => 'เพิ่มสินค้าสำเร็จ!', 'id' => $db->lastInsertId()]);
 }
@@ -114,15 +110,11 @@ function handleUpdate($db) {
     $name = trim($_POST['name'] ?? $existing['name']);
     $brand = trim($_POST['brand'] ?? $existing['brand']);
     $price = floatval($_POST['price'] ?? $existing['price']);
-    $type = $_POST['type'] ?? $existing['type'];
+    $category_id = isset($_POST['category_id']) ? (!empty($_POST['category_id']) ? intval($_POST['category_id']) : null) : $existing['category_id'];
     $description = trim($_POST['description'] ?? $existing['description']);
     $features = trim($_POST['features'] ?? $existing['features']);
     $sort_order = intval($_POST['sort_order'] ?? $existing['sort_order']);
     $is_featured = isset($_POST['is_featured']) ? intval($_POST['is_featured']) : 0;
-
-    if (!in_array($type, ['analog', 'digital', 'both'])) {
-        $type = 'analog';
-    }
 
     // Handle image
     $imageName = handleImageUpload();
@@ -133,8 +125,8 @@ function handleUpdate($db) {
         $imageName = $existing['image'];
     }
 
-    $stmt = $db->prepare("UPDATE products SET name=?, brand=?, price=?, description=?, type=?, features=?, image=?, is_featured=?, sort_order=? WHERE id=?");
-    $stmt->execute([$name, $brand, $price, $description, $type, $features, $imageName, $is_featured, $sort_order, $id]);
+    $stmt = $db->prepare("UPDATE products SET name=?, brand=?, price=?, description=?, category_id=?, features=?, image=?, is_featured=?, sort_order=? WHERE id=?");
+    $stmt->execute([$name, $brand, $price, $description, $category_id, $features, $imageName, $is_featured, $sort_order, $id]);
 
     echo json_encode(['success' => true, 'message' => 'แก้ไขสินค้าสำเร็จ!']);
 }

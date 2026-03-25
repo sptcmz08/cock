@@ -1,13 +1,24 @@
 -- Watch Showcase Database
 -- สร้าง database ก่อน: CREATE DATABASE watch_showcase CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-
+CREATE DATABASE IF NOT EXISTS `watch_showcase` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `watch_showcase`;
 
 -- ตาราง admins
 CREATE TABLE `admins` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(50) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ตาราง categories (ประเภทสินค้า)
+CREATE TABLE `categories` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `slug` VARCHAR(100) NOT NULL UNIQUE,
+    `icon` VARCHAR(10) DEFAULT '⌚',
+    `sort_order` INT NOT NULL DEFAULT 0,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -41,15 +52,21 @@ INSERT INTO `site_settings` (`setting_key`, `setting_value`, `setting_type`, `se
 ('section_title_1', 'คอลเลกชัน', 'text', 'section', 'หัวข้อส่วนสินค้า (ส่วนแรก)'),
 ('section_title_2', 'นาฬิกา', 'text', 'section', 'หัวข้อส่วนสินค้า (ส่วนสี — highlight)'),
 ('section_subtitle', 'รวมนาฬิกาเครื่องใหญ่คุณภาพสูงทั้ง Analog และ Digital จากแบรนด์ระดับโลก', 'textarea', 'section', 'คำอธิบายส่วนสินค้า'),
--- Stats custom (4th stat)
-('stat_custom_value', '100%', 'text', 'stats', 'สถิติพิเศษ — ตัวเลข'),
-('stat_custom_label', 'ของแท้รับประกัน', 'text', 'stats', 'สถิติพิเศษ — ป้าย'),
+-- Stats (all 4 customizable)
+('stat_1_value', 'auto', 'text', 'stats', 'สถิติ 1 — ตัวเลข (พิมพ์ auto = นับจากสินค้า)'),
+('stat_1_label', 'รุ่นสินค้า', 'text', 'stats', 'สถิติ 1 — ป้าย'),
+('stat_2_value', 'auto', 'text', 'stats', 'สถิติ 2 — ตัวเลข (พิมพ์ auto = นับแบรนด์)'),
+('stat_2_label', 'แบรนด์ชั้นนำ', 'text', 'stats', 'สถิติ 2 — ป้าย'),
+('stat_3_value', 'auto', 'text', 'stats', 'สถิติ 3 — ตัวเลข (พิมพ์ auto = สินค้าแนะนำ)'),
+('stat_3_label', 'สินค้าแนะนำ', 'text', 'stats', 'สถิติ 3 — ป้าย'),
+('stat_4_value', '100%', 'text', 'stats', 'สถิติ 4 — ตัวเลข'),
+('stat_4_label', 'ของแท้รับประกัน', 'text', 'stats', 'สถิติ 4 — ป้าย'),
 -- Contact
-('contact_phone', '', 'text', 'contact', 'เบอร์โทรศัพท์'),
-('contact_email', '', 'text', 'contact', 'อีเมล'),
-('contact_line', '', 'text', 'contact', 'LINE ID'),
-('contact_facebook', '', 'text', 'contact', 'Facebook URL'),
-('contact_address', '', 'textarea', 'contact', 'ที่อยู่'),
+('contact_phone', '08x-xxx-xxxx', 'text', 'contact', 'เบอร์โทรศัพท์'),
+('contact_email', 'info@chronos.com', 'text', 'contact', 'อีเมล'),
+('contact_line', '@chronos', 'text', 'contact', 'LINE ID'),
+('contact_facebook', 'https://facebook.com/chronos', 'text', 'contact', 'Facebook URL'),
+('contact_address', 'กรุงเทพมหานคร, ประเทศไทย', 'textarea', 'contact', 'ที่อยู่'),
 -- Footer
 ('footer_tagline', 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม', 'text', 'footer', 'Tagline Footer'),
 ('footer_copyright', 'CHRONOS. All rights reserved.', 'text', 'footer', 'Copyright Footer');
@@ -61,33 +78,40 @@ CREATE TABLE `products` (
     `brand` VARCHAR(100) NOT NULL DEFAULT '',
     `price` DECIMAL(12,2) NOT NULL DEFAULT 0,
     `description` TEXT,
-    `type` ENUM('analog','digital','both') NOT NULL DEFAULT 'analog',
+    `category_id` INT DEFAULT NULL,
     `features` TEXT,
     `image` VARCHAR(255) DEFAULT NULL,
     `is_featured` TINYINT(1) NOT NULL DEFAULT 0,
     `sort_order` INT NOT NULL DEFAULT 0,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Default admin (password: admin123)
 INSERT INTO `admins` (`username`, `password`) VALUES 
 ('admin', '$2y$10$2CEcqp84H6Bz7z10wERxoewBwJ9FX/ZUPDWeCtdUwr3eJ5jZIBV2C');
 
+-- Default categories
+INSERT INTO `categories` (`name`, `slug`, `icon`, `sort_order`) VALUES
+('Analog', 'analog', '⏱', 1),
+('Digital', 'digital', '🔢', 2),
+('Analog + Digital', 'both', '⌚', 3);
+
 -- Sample products
-INSERT INTO `products` (`name`, `brand`, `price`, `description`, `type`, `features`, `is_featured`, `sort_order`) VALUES
-('Grand Seiko Heritage SBGA211', 'Grand Seiko', 185000.00, 'นาฬิกาเครื่องใหญ่ Grand Seiko รุ่น Heritage Collection ตัวเรือนสแตนเลสสตีล หน้าปัด Snowflake อันเป็นเอกลักษณ์ ขับเคลื่อนด้วยระบบ Spring Drive ที่รวมความแม่นยำของควอตซ์และความสวยงามของเครื่องกล', 'analog', 'Spring Drive Caliber 9R65|กันน้ำ 100 เมตร|สำรองพลังงาน 72 ชั่วโมง|เส้นผ่านศูนย์กลาง 41mm|กระจก Sapphire Crystal|ตัวเรือน Stainless Steel', 1, 1),
+INSERT INTO `products` (`name`, `brand`, `price`, `description`, `category_id`, `features`, `is_featured`, `sort_order`) VALUES
+('Grand Seiko Heritage SBGA211', 'Grand Seiko', 185000.00, 'นาฬิกาเครื่องใหญ่ Grand Seiko รุ่น Heritage Collection ตัวเรือนสแตนเลสสตีล หน้าปัด Snowflake อันเป็นเอกลักษณ์ ขับเคลื่อนด้วยระบบ Spring Drive ที่รวมความแม่นยำของควอตซ์และความสวยงามของเครื่องกล', 1, 'Spring Drive Caliber 9R65|กันน้ำ 100 เมตร|สำรองพลังงาน 72 ชั่วโมง|เส้นผ่านศูนย์กลาง 41mm|กระจก Sapphire Crystal|ตัวเรือน Stainless Steel', 1, 1),
 
-('Casio G-Shock GWG-2000', 'Casio', 18500.00, 'นาฬิกาเครื่องใหญ่ G-Shock รุ่น Mudmaster ทนทานสุดขีด โครงสร้าง Carbon Core Guard กันกระแทก กันโคลน กันฝุ่น พร้อมเซ็นเซอร์วัดทิศ อุณหภูมิ และความกดอากาศ', 'both', 'Tough Solar + Multi-Band 6|Triple Sensor V3|Carbon Core Guard|กันน้ำ 200 เมตร|เส้นผ่านศูนย์กลาง 54.4mm|Mud Resistant|Bluetooth Connected', 1, 2),
+('Casio G-Shock GWG-2000', 'Casio', 18500.00, 'นาฬิกาเครื่องใหญ่ G-Shock รุ่น Mudmaster ทนทานสุดขีด โครงสร้าง Carbon Core Guard กันกระแทก กันโคลน กันฝุ่น พร้อมเซ็นเซอร์วัดทิศ อุณหภูมิ และความกดอากาศ', 3, 'Tough Solar + Multi-Band 6|Triple Sensor V3|Carbon Core Guard|กันน้ำ 200 เมตร|เส้นผ่านศูนย์กลาง 54.4mm|Mud Resistant|Bluetooth Connected', 1, 2),
 
-('Omega Seamaster Planet Ocean 600M', 'Omega', 245000.00, 'นาฬิกาเครื่องใหญ่ Omega Seamaster รุ่น Planet Ocean กันน้ำ 600 เมตร ตัวเรือนสแตนเลสสตีล ขอบ Ceramic พร้อม Master Chronometer Calibre 8900 ที่ผ่านการรับรองจาก METAS', 'analog', 'Master Chronometer Calibre 8900|กันน้ำ 600 เมตร|เส้นผ่านศูนย์กลาง 43.5mm|Co-Axial Escapement|Silicon Balance Spring|กระจก Sapphire Crystal', 1, 3),
+('Omega Seamaster Planet Ocean 600M', 'Omega', 245000.00, 'นาฬิกาเครื่องใหญ่ Omega Seamaster รุ่น Planet Ocean กันน้ำ 600 เมตร ตัวเรือนสแตนเลสสตีล ขอบ Ceramic พร้อม Master Chronometer Calibre 8900 ที่ผ่านการรับรองจาก METAS', 1, 'Master Chronometer Calibre 8900|กันน้ำ 600 เมตร|เส้นผ่านศูนย์กลาง 43.5mm|Co-Axial Escapement|Silicon Balance Spring|กระจก Sapphire Crystal', 1, 3),
 
-('Casio G-Shock GA-2100-1A1', 'Casio', 4590.00, 'นาฬิกาเครื่องใหญ่ G-Shock รุ่น CasiOak ดีไซน์บาง เบา ทันสมัย หน้าปัดทรงแปดเหลี่ยม ผสมผสานจอ Analog และ Digital กันกระแทกตามมาตรฐาน G-Shock', 'both', 'กันกระแทก 200G|กันน้ำ 200 เมตร|เส้นผ่านศูนย์กลาง 45.4mm|หนา 11.8mm|น้ำหนัก 51g|World Time 31 โซนเวลา|LED Light', 0, 4),
+('Casio G-Shock GA-2100-1A1', 'Casio', 4590.00, 'นาฬิกาเครื่องใหญ่ G-Shock รุ่น CasiOak ดีไซน์บาง เบา ทันสมัย หน้าปัดทรงแปดเหลี่ยม ผสมผสานจอ Analog และ Digital กันกระแทกตามมาตรฐาน G-Shock', 3, 'กันกระแทก 200G|กันน้ำ 200 เมตร|เส้นผ่านศูนย์กลาง 45.4mm|หนา 11.8mm|น้ำหนัก 51g|World Time 31 โซนเวลา|LED Light', 0, 4),
 
-('Seiko Presage SPB167J1', 'Seiko', 28900.00, 'นาฬิกาเครื่องใหญ่ Seiko Presage Sharp Edged Series หน้าปัดลาย Asanoha อันประณีต แรงบันดาลใจจากลวดลายญี่ปุ่นโบราณ ตัวเรือนสแตนเลสสตีลเจียระไนคม ขับเคลื่อนด้วย Caliber 6R35', 'analog', 'Caliber 6R35 Automatic|สำรองพลังงาน 70 ชั่วโมง|กันน้ำ 100 เมตร|เส้นผ่านศูนย์กลาง 39.3mm|กระจก Sapphire Crystal|หน้าปัดลาย Asanoha', 0, 5),
+('Seiko Presage SPB167J1', 'Seiko', 28900.00, 'นาฬิกาเครื่องใหญ่ Seiko Presage Sharp Edged Series หน้าปัดลาย Asanoha อันประณีต แรงบันดาลใจจากลวดลายญี่ปุ่นโบราณ ตัวเรือนสแตนเลสสตีลเจียระไนคม ขับเคลื่อนด้วย Caliber 6R35', 1, 'Caliber 6R35 Automatic|สำรองพลังงาน 70 ชั่วโมง|กันน้ำ 100 เมตร|เส้นผ่านศูนย์กลาง 39.3mm|กระจก Sapphire Crystal|หน้าปัดลาย Asanoha', 0, 5),
 
-('Citizen Promaster Eco-Drive BN0150-28E', 'Citizen', 12500.00, 'นาฬิกาเครื่องใหญ่ Citizen Promaster Eco-Drive ดำน้ำ ISO 6425 พลังงานแสงอาทิตย์ ไม่ต้องเปลี่ยนแบตเตอรี่ ตัวเรือนสแตนเลสสตีลเคลือบ PVD สีดำ ขอบหมุนได้', 'analog', 'Eco-Drive (พลังงานแสง)|สำรองพลังงาน 180 วัน|กันน้ำ 200 เมตร|เส้นผ่านศูนย์กลาง 44mm|ISO 6425 Dive Certified|ขอบหมุนทิศทางเดียว', 0, 6),
+('Citizen Promaster Eco-Drive BN0150-28E', 'Citizen', 12500.00, 'นาฬิกาเครื่องใหญ่ Citizen Promaster Eco-Drive ดำน้ำ ISO 6425 พลังงานแสงอาทิตย์ ไม่ต้องเปลี่ยนแบตเตอรี่ ตัวเรือนสแตนเลสสตีลเคลือบ PVD สีดำ ขอบหมุนได้', 1, 'Eco-Drive (พลังงานแสง)|สำรองพลังงาน 180 วัน|กันน้ำ 200 เมตร|เส้นผ่านศูนย์กลาง 44mm|ISO 6425 Dive Certified|ขอบหมุนทิศทางเดียว', 0, 6),
 
-('Casio Pro Trek PRW-6600Y', 'Casio', 14900.00, 'นาฬิกาเครื่องใหญ่ Casio Pro Trek สำหรับนักผจญภัย พร้อม Triple Sensor วัดทิศ ความสูง ความกดอากาศ และอุณหภูมิ ใช้พลังงานแสงอาทิตย์ + คลื่นวิทยุปรับเวลาอัตโนมัติ', 'digital', 'Tough Solar + Multi-Band 6|Triple Sensor V3|กันน้ำ 100 เมตร|เส้นผ่านศูนย์กลาง 51.5mm|Neon Illuminator|Full Auto LED Light', 0, 7),
+('Casio Pro Trek PRW-6600Y', 'Casio', 14900.00, 'นาฬิกาเครื่องใหญ่ Casio Pro Trek สำหรับนักผจญภัย พร้อม Triple Sensor วัดทิศ ความสูง ความกดอากาศ และอุณหภูมิ ใช้พลังงานแสงอาทิตย์ + คลื่นวิทยุปรับเวลาอัตโนมัติ', 2, 'Tough Solar + Multi-Band 6|Triple Sensor V3|กันน้ำ 100 เมตร|เส้นผ่านศูนย์กลาง 51.5mm|Neon Illuminator|Full Auto LED Light', 0, 7),
 
-('Orient Star RE-AV0005L00B', 'Orient', 22500.00, 'นาฬิกาเครื่องใหญ่ Orient Star Contemporary Collection สีน้ำเงิน Open Heart หน้าปัดเจาะเปิดให้เห็นการทำงานของเครื่อง เครื่อง Caliber F6N43 Automatic Made in Japan', 'analog', 'Caliber F6N43 Automatic|สำรองพลังงาน 50 ชั่วโมง|กันน้ำ 100 เมตร|เส้นผ่านศูนย์กลาง 41mm|Open Heart Design|Power Reserve Indicator|กระจก Sapphire Crystal', 0, 8);
+('Orient Star RE-AV0005L00B', 'Orient', 22500.00, 'นาฬิกาเครื่องใหญ่ Orient Star Contemporary Collection สีน้ำเงิน Open Heart หน้าปัดเจาะเปิดให้เห็นการทำงานของเครื่อง เครื่อง Caliber F6N43 Automatic Made in Japan', 1, 'Caliber F6N43 Automatic|สำรองพลังงาน 50 ชั่วโมง|กันน้ำ 100 เมตร|เส้นผ่านศูนย์กลาง 41mm|Open Heart Design|Power Reserve Indicator|กระจก Sapphire Crystal', 0, 8);

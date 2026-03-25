@@ -40,6 +40,9 @@ function val($settings, $key) {
             <a href="products.php">
                 <span class="nav-icon">⌚</span> จัดการสินค้า
             </a>
+            <a href="categories.php">
+                <span class="nav-icon">📂</span> จัดการประเภท
+            </a>
             <a href="settings.php" class="active">
                 <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
             </a>
@@ -165,22 +168,25 @@ function val($settings, $key) {
                 </div>
             </div>
 
-            <!-- Stats Custom -->
+            <!-- Stats (all 4) -->
             <div class="settings-section">
                 <div class="settings-section-header">
-                    <h3>📊 สถิติพิเศษ (ช่องที่ 4)</h3>
+                    <h3>📊 สถิติ (4 ช่อง)</h3>
+                    <small style="color:var(--gray);">พิมพ์ auto ในช่องตัวเลข = นับอัตโนมัติ</small>
                 </div>
                 <div class="settings-section-body">
-                    <div class="form-row">
+                    <?php for ($i = 1; $i <= 4; $i++): ?>
+                    <div class="form-row" style="margin-bottom:8px;">
                         <div class="form-group">
-                            <label>ตัวเลข</label>
-                            <input type="text" name="stat_custom_value" class="form-control" value="<?= val($settings, 'stat_custom_value') ?>" placeholder="100%">
+                            <label>สถิติ <?= $i ?> — ตัวเลข<?= $i <= 3 ? ' <small style="color:var(--gray);">(auto = นับอัตโนมัติ)</small>' : '' ?></label>
+                            <input type="text" name="stat_<?= $i ?>_value" class="form-control" value="<?= val($settings, 'stat_'.$i.'_value') ?>">
                         </div>
                         <div class="form-group">
-                            <label>ป้ายกำกับ</label>
-                            <input type="text" name="stat_custom_label" class="form-control" value="<?= val($settings, 'stat_custom_label') ?>" placeholder="ของแท้รับประกัน">
+                            <label>สถิติ <?= $i ?> — ป้าย</label>
+                            <input type="text" name="stat_<?= $i ?>_label" class="form-control" value="<?= val($settings, 'stat_'.$i.'_label') ?>">
                         </div>
                     </div>
+                    <?php endfor; ?>
                 </div>
             </div>
 

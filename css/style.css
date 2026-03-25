@@ -1063,6 +1063,21 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
 .footer-links a:hover { color: var(--gold); }
 
+.footer-contact-info {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-contact-item {
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    color: var(--gray);
+    transition: var(--transition-fast);
+}
+
+a.footer-contact-item:hover { color: var(--gold); }
+
 .footer-bottom {
     padding-top: 24px;
     border-top: 1px solid var(--dark-border);

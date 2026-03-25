@@ -6,7 +6,8 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../db.php';
 
 $db = getDB();
-$products = $db->query("SELECT * FROM products ORDER BY sort_order ASC, created_at DESC")->fetchAll();
+$products = $db->query("SELECT p.*, c.name as category_name, c.icon as category_icon, c.slug as category_slug FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.sort_order ASC, p.created_at DESC")->fetchAll();
+$categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id ASC")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -30,6 +31,9 @@ $products = $db->query("SELECT * FROM products ORDER BY sort_order ASC, created_
             </a>
             <a href="products.php" class="active">
                 <span class="nav-icon">⌚</span> จัดการสินค้า
+            </a>
+            <a href="categories.php">
+                <span class="nav-icon">📂</span> จัดการประเภท
             </a>
             <a href="settings.php">
                 <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
@@ -89,9 +93,11 @@ $products = $db->query("SELECT * FROM products ORDER BY sort_order ASC, created_
                                 <td><strong><?= htmlspecialchars($p['name']) ?></strong></td>
                                 <td><?= htmlspecialchars($p['brand']) ?></td>
                                 <td>
-                                    <span class="type-badge <?= $p['type'] ?>">
-                                        <?= $p['type'] === 'analog' ? '⏱ Analog' : ($p['type'] === 'digital' ? '🔢 Digital' : '⌚ Both') ?>
-                                    </span>
+                                    <?php if ($p['category_name']): ?>
+                                        <span class="type-badge analog"><?= htmlspecialchars($p['category_icon'] . ' ' . $p['category_name']) ?></span>
+                                    <?php else: ?>
+                                        <span class="type-badge" style="color:var(--gray);">— ไม่ระบุ</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td style="color: var(--gold); font-weight: 600;">฿<?= number_format($p['price'], 0, '.', ',') ?></td>
                                 <td><?= $p['is_featured'] ? '⭐' : '—' ?></td>
@@ -136,11 +142,12 @@ $products = $db->query("SELECT * FROM products ORDER BY sort_order ASC, created_
                         <input type="number" name="price" id="formPrice" class="form-control" placeholder="0.00" step="0.01" min="0" required>
                     </div>
                     <div class="form-group">
-                        <label>ประเภท <span class="required">*</span></label>
-                        <select name="type" id="formType" class="form-control" required>
-                            <option value="analog">⏱ Analog</option>
-                            <option value="digital">🔢 Digital</option>
-                            <option value="both">⌚ Analog + Digital</option>
+                        <label>ประเภท</label>
+                        <select name="category_id" id="formCategory" class="form-control">
+                            <option value="">— ไม่ระบุประเภท —</option>
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['icon'] . ' ' . $cat['name']) ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
@@ -204,7 +211,7 @@ function openEditModal(product) {
     document.getElementById('formName').value = product.name;
     document.getElementById('formBrand').value = product.brand;
     document.getElementById('formPrice').value = product.price;
-    document.getElementById('formType').value = product.type;
+    document.getElementById('formCategory').value = product.category_id || '';
     document.getElementById('formDesc').value = product.description || '';
     document.getElementById('formFeatures').value = product.features || '';
     document.getElementById('formSort').value = product.sort_order || 0;
@@ -256,13 +263,12 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
 
     try {
         const url = isEdit ? `${API_URL}?id=${id}` : API_URL;
-        const method = isEdit ? 'POST' : 'POST';
         
         if (isEdit) {
             formData.append('_method', 'PUT');
         }
 
-        const res = await fetch(url, { method, body: formData });
+        const res = await fetch(url, { method: 'POST', body: formData });
         const data = await res.json();
 
         if (data.success) {

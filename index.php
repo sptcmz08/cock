@@ -7,12 +7,14 @@ require_once __DIR__ . '/helpers.php';
 
 try {
     $db = getDB();
-    $products = $db->query("SELECT * FROM products ORDER BY is_featured DESC, sort_order ASC, created_at DESC")->fetchAll();
+    $products = $db->query("SELECT p.*, c.name as category_name, c.slug as category_slug, c.icon as category_icon FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.is_featured DESC, p.sort_order ASC, p.created_at DESC")->fetchAll();
+    $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id ASC")->fetchAll();
     $totalProducts = count($products);
     $brands = $db->query("SELECT COUNT(DISTINCT brand) as cnt FROM products")->fetch()['cnt'];
     $featured = $db->query("SELECT COUNT(*) as cnt FROM products WHERE is_featured = 1")->fetch()['cnt'];
 } catch (Exception $e) {
     $products = [];
+    $categories = [];
     $totalProducts = 0;
     $brands = 0;
     $featured = 0;
@@ -29,13 +31,22 @@ function formatThaiPrice($price) {
     return number_format($price, 0, '.', ',');
 }
 
-function getTypeLabel($type) {
-    $labels = ['analog' => '⏱ Analog', 'digital' => '🔢 Digital', 'both' => '⌚ Analog + Digital'];
-    return $labels[$type] ?? $type;
-}
-
 // Check if any contact info exists
 $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !empty($S['contact_line']) || !empty($S['contact_facebook']) || !empty($S['contact_address']);
+
+// Stats values — 'auto' means count from DB
+$autoStats = [$totalProducts, $brands, $featured];
+$stats = [];
+for ($i = 1; $i <= 4; $i++) {
+    $val = $S["stat_{$i}_value"] ?? ($i <= 3 ? 'auto' : '100%');
+    if (strtolower(trim($val)) === 'auto' && $i <= 3) {
+        $val = $autoStats[$i - 1];
+    }
+    $stats[$i] = [
+        'value' => $val,
+        'label' => $S["stat_{$i}_label"] ?? ''
+    ];
+}
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -63,9 +74,7 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
         <ul class="navbar-nav" id="navMenu">
             <li><a href="#hero">หน้าแรก</a></li>
             <li><a href="#products">สินค้า</a></li>
-            <?php if ($hasContact): ?>
-                <li><a href="#contact">ติดต่อ</a></li>
-            <?php endif; ?>
+            <li><a href="#contact">ติดต่อ</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
             <span></span><span></span><span></span>
@@ -75,14 +84,18 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
 
 <!-- ====== Hero ====== -->
 <section class="hero" id="hero">
-    <div class="hero-bg"></div>
-    
-    <!-- Animated Clock -->
-    <div class="hero-clock">
-        <div class="clock-ticks"></div>
-        <div class="clock-hand hour"></div>
-        <div class="clock-hand minute"></div>
-        <div class="clock-hand second"></div>
+    <div class="hero-bg-pattern">
+        <div class="hero-clock">
+            <div class="clock-center"></div>
+            <div class="clock-hand hour"></div>
+            <div class="clock-hand minute"></div>
+            <div class="clock-hand second"></div>
+            <div class="clock-ticks">
+                <?php for ($i = 0; $i < 60; $i++): ?>
+                    <div class="clock-tick<?= $i % 5 === 0 ? ' major' : '' ?>" style="transform: rotate(<?= $i * 6 ?>deg)"></div>
+                <?php endfor; ?>
+            </div>
+        </div>
     </div>
 
     <div class="hero-content">
@@ -91,9 +104,7 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
             <span class="line1"><?= htmlspecialchars($S['hero_title_1'] ?? 'นาฬิกาเครื่องใหญ่') ?></span>
             <span class="line2"><?= htmlspecialchars($S['hero_title_2'] ?? 'ระดับพรีเมียม') ?></span>
         </h1>
-        <p class="hero-desc">
-            <?= htmlspecialchars($S['hero_desc'] ?? 'คอลเลกชันนาฬิกาเครื่องใหญ่คัดสรรพิเศษ ทั้ง Analog และ Digital จากแบรนด์ชั้นนำระดับโลก ตอบโจทย์ทุกไลฟ์สไตล์') ?>
-        </p>
+        <p class="hero-desc"><?= htmlspecialchars($S['hero_desc'] ?? '') ?></p>
         <a href="#products" class="hero-cta">
             <?= htmlspecialchars($S['hero_cta_text'] ?? 'ชมคอลเลกชัน →') ?>
         </a>
@@ -109,22 +120,12 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
 <div class="stats-bar">
     <div class="container">
         <div class="stats-grid">
+            <?php for ($i = 1; $i <= 4; $i++): ?>
             <div class="stat-item reveal">
-                <div class="stat-number"><?= $totalProducts ?></div>
-                <div class="stat-label">รุ่นสินค้า</div>
+                <div class="stat-number"><?= htmlspecialchars($stats[$i]['value']) ?></div>
+                <div class="stat-label"><?= htmlspecialchars($stats[$i]['label']) ?></div>
             </div>
-            <div class="stat-item reveal">
-                <div class="stat-number"><?= $brands ?></div>
-                <div class="stat-label">แบรนด์ชั้นนำ</div>
-            </div>
-            <div class="stat-item reveal">
-                <div class="stat-number"><?= $featured ?></div>
-                <div class="stat-label">สินค้าแนะนำ</div>
-            </div>
-            <div class="stat-item reveal">
-                <div class="stat-number"><?= htmlspecialchars($S['stat_custom_value'] ?? '100%') ?></div>
-                <div class="stat-label"><?= htmlspecialchars($S['stat_custom_label'] ?? 'ของแท้รับประกัน') ?></div>
-            </div>
+            <?php endfor; ?>
         </div>
     </div>
 </div>
@@ -135,13 +136,13 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
         <div class="products-header reveal">
             <div class="section-badge"><?= htmlspecialchars($S['section_badge'] ?? '✦ Our Collection') ?></div>
             <h2 class="section-title"><?= htmlspecialchars($S['section_title_1'] ?? 'คอลเลกชัน') ?><span><?= htmlspecialchars($S['section_title_2'] ?? 'นาฬิกา') ?></span></h2>
-            <p class="section-subtitle"><?= htmlspecialchars($S['section_subtitle'] ?? 'รวมนาฬิกาเครื่องใหญ่คุณภาพสูงทั้ง Analog และ Digital จากแบรนด์ระดับโลก') ?></p>
+            <p class="section-subtitle"><?= htmlspecialchars($S['section_subtitle'] ?? '') ?></p>
             
             <div class="filter-tabs">
                 <button class="filter-tab active" data-filter="all">ทั้งหมด</button>
-                <button class="filter-tab" data-filter="analog">Analog</button>
-                <button class="filter-tab" data-filter="digital">Digital</button>
-                <button class="filter-tab" data-filter="both">Analog + Digital</button>
+                <?php foreach ($categories as $cat): ?>
+                    <button class="filter-tab" data-filter="<?= htmlspecialchars($cat['slug']) ?>"><?= htmlspecialchars($cat['name']) ?></button>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -155,13 +156,15 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
                 <?php foreach ($products as $p): ?>
                     <div class="product-card reveal" 
                          data-id="<?= $p['id'] ?>"
-                         data-type="<?= htmlspecialchars($p['type']) ?>"
+                         data-category="<?= htmlspecialchars($p['category_slug'] ?? '') ?>"
                          data-name="<?= htmlspecialchars($p['name']) ?>"
                          data-brand="<?= htmlspecialchars($p['brand']) ?>"
                          data-price="<?= $p['price'] ?>"
                          data-description="<?= htmlspecialchars($p['description']) ?>"
                          data-features="<?= htmlspecialchars($p['features']) ?>"
                          data-image="<?= $p['image'] ? htmlspecialchars(UPLOAD_URL . $p['image']) : '' ?>"
+                         data-category-name="<?= htmlspecialchars($p['category_name'] ?? '') ?>"
+                         data-category-icon="<?= htmlspecialchars($p['category_icon'] ?? '⌚') ?>"
                          onclick="openProductModal(<?= $p['id'] ?>)">
                         
                         <div class="card-image">
@@ -170,7 +173,9 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
                             <?php else: ?>
                                 <div class="placeholder-img">⌚</div>
                             <?php endif; ?>
-                            <div class="card-badge <?= $p['type'] ?>"><?= getTypeLabel($p['type']) ?></div>
+                            <?php if ($p['category_name']): ?>
+                                <div class="card-badge analog"><?= htmlspecialchars(($p['category_icon'] ?? '') . ' ' . $p['category_name']) ?></div>
+                            <?php endif; ?>
                             <?php if ($p['is_featured']): ?>
                                 <div class="card-featured" title="สินค้าแนะนำ">★</div>
                             <?php endif; ?>
@@ -268,6 +273,8 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
         </div>
     </div>
 </section>
+<?php else: ?>
+<section id="contact"></section>
 <?php endif; ?>
 
 <!-- ====== Footer ====== -->
@@ -284,12 +291,25 @@ $hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !emp
                 </div>
                 <div class="footer-tagline"><?= htmlspecialchars($S['footer_tagline'] ?? 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม') ?></div>
             </div>
+
+            <?php if ($hasContact): ?>
+            <div class="footer-contact-info">
+                <?php if (!empty($S['contact_phone'])): ?>
+                    <a href="tel:<?= htmlspecialchars($S['contact_phone']) ?>" class="footer-contact-item">📱 <?= htmlspecialchars($S['contact_phone']) ?></a>
+                <?php endif; ?>
+                <?php if (!empty($S['contact_email'])): ?>
+                    <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="footer-contact-item">📧 <?= htmlspecialchars($S['contact_email']) ?></a>
+                <?php endif; ?>
+                <?php if (!empty($S['contact_line'])): ?>
+                    <span class="footer-contact-item">💚 <?= htmlspecialchars($S['contact_line']) ?></span>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
             <ul class="footer-links">
                 <li><a href="#hero">หน้าแรก</a></li>
                 <li><a href="#products">สินค้า</a></li>
-                <?php if ($hasContact): ?>
-                    <li><a href="#contact">ติดต่อ</a></li>
-                <?php endif; ?>
+                <li><a href="#contact">ติดต่อ</a></li>
                 <li><a href="admin/">จัดการระบบ</a></li>
             </ul>
         </div>
