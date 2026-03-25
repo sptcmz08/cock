@@ -13,7 +13,14 @@ define('DB_CHARSET', 'utf8mb4');
 // Application
 define('SITE_NAME', 'CHRONOS — Premium Watch Gallery');
 define('SITE_TAGLINE', 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม');
-define('BASE_URL', '/cock/');
+
+// Auto-detect BASE_URL from script path
+$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+// Walk up if we are inside /admin or /admin/api
+if (preg_match('#/admin(/api)?$#', $scriptDir)) {
+    $scriptDir = preg_replace('#/admin(/api)?$#', '', $scriptDir);
+}
+define('BASE_URL', rtrim($scriptDir, '/') . '/');
 
 // Upload
 define('UPLOAD_DIR', __DIR__ . '/uploads/products/');

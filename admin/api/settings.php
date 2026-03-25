@@ -69,7 +69,8 @@ try {
         'logo_text', 'site_title', 'meta_description',
         'hero_overline', 'hero_title_1', 'hero_title_2', 'hero_desc', 'hero_cta_text',
         'section_badge', 'section_title_1', 'section_title_2', 'section_subtitle',
-        'stat_custom_value', 'stat_custom_label',
+        'stat_1_value', 'stat_1_label', 'stat_2_value', 'stat_2_label',
+        'stat_3_value', 'stat_3_label', 'stat_4_value', 'stat_4_label',
         'contact_phone', 'contact_email', 'contact_line', 'contact_facebook', 'contact_address',
         'footer_tagline', 'footer_copyright'
     ];
