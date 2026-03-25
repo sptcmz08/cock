@@ -7,9 +7,7 @@ require_once __DIR__ . '/../db.php';
 
 $db = getDB();
 $totalProducts = $db->query("SELECT COUNT(*) FROM products")->fetchColumn();
-$totalAnalog = $db->query("SELECT COUNT(*) FROM products WHERE type='analog'")->fetchColumn();
-$totalDigital = $db->query("SELECT COUNT(*) FROM products WHERE type='digital'")->fetchColumn();
-$totalBoth = $db->query("SELECT COUNT(*) FROM products WHERE type='both'")->fetchColumn();
+$totalCategories = $db->query("SELECT COUNT(*) FROM categories")->fetchColumn();
 $totalFeatured = $db->query("SELECT COUNT(*) FROM products WHERE is_featured=1")->fetchColumn();
 $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchColumn();
 ?>
@@ -70,24 +68,10 @@ $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchCo
                 </div>
             </div>
             <div class="stat-card">
-                <div class="icon">⏱</div>
+                <div class="icon">📂</div>
                 <div class="info">
-                    <h3><?= $totalAnalog ?></h3>
-                    <p>Analog</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="icon">🔢</div>
-                <div class="info">
-                    <h3><?= $totalDigital ?></h3>
-                    <p>Digital</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="icon">🔀</div>
-                <div class="info">
-                    <h3><?= $totalBoth ?></h3>
-                    <p>Analog + Digital</p>
+                    <h3><?= $totalCategories ?></h3>
+                    <p>ประเภทสินค้า</p>
                 </div>
             </div>
             <div class="stat-card">
