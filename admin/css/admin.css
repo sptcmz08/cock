@@ -647,6 +647,65 @@ select.form-control {
     margin-bottom: 20px;
 }
 
+/* ---------- Settings Sections ---------- */
+.settings-section {
+    background: var(--dark);
+    border: 1px solid var(--dark-border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.settings-section-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--dark-border);
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.settings-section-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.settings-section-body {
+    padding: 24px;
+}
+
+/* Floating Save */
+.floating-save {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    z-index: 200;
+}
+
+.floating-save .btn {
+    box-shadow: 0 4px 20px rgba(201, 169, 110, 0.35);
+    padding: 14px 32px;
+    font-size: 0.9rem;
+}
+
+/* Remove image button */
+.remove-img-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(231, 76, 60, 0.9);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.remove-img-btn:hover {
+    background: var(--red-dark);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
     .sidebar {

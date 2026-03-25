@@ -948,6 +948,73 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     font-size: 0.75rem;
 }
 
+/* ---------- Brand Logo Image ---------- */
+.brand-logo-img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* ---------- Contact Section ---------- */
+.contact-section {
+    padding: 80px 0;
+    background: var(--dark);
+    border-top: 1px solid var(--dark-border);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.contact-card {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    transition: var(--transition);
+    display: block;
+}
+
+.contact-card:hover {
+    border-color: rgba(201, 169, 110, 0.3);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-gold);
+}
+
+.contact-card-wide {
+    grid-column: 1 / -1;
+}
+
+.contact-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.contact-label {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+.contact-value {
+    font-size: 0.95rem;
+    color: var(--gray-light);
+    line-height: 1.7;
+}
+
 /* ---------- Footer ---------- */
 .footer {
     background: var(--dark);
@@ -1098,6 +1165,9 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
     .footer-top { flex-direction: column; text-align: center; }
     .footer-links { flex-wrap: wrap; justify-content: center; }
+
+    .contact-grid { grid-template-columns: 1fr 1fr; }
+    .contact-card-wide { grid-column: 1 / -1; }
     .footer-bottom { flex-direction: column; text-align: center; }
 }
 

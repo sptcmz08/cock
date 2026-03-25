@@ -36,6 +36,9 @@ $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchCo
             <a href="products.php">
                 <span class="nav-icon">⌚</span> จัดการสินค้า
             </a>
+            <a href="settings.php">
+                <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
+            </a>
             <a href="../" target="_blank">
                 <span class="nav-icon">🌐</span> ดูเว็บไซต์
             </a>
@@ -108,6 +111,7 @@ $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchCo
             <div style="padding: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
                 <a href="products.php" class="btn btn-primary">⌚ จัดการสินค้า</a>
                 <a href="products.php?action=add" class="btn btn-secondary">➕ เพิ่มสินค้าใหม่</a>
+                <a href="settings.php" class="btn btn-secondary">⚙️ ตั้งค่าเว็บไซต์</a>
                 <a href="../" target="_blank" class="btn btn-secondary">🌐 เปิดเว็บไซต์</a>
             </div>
         </div>

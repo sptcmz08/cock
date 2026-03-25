@@ -3,7 +3,7 @@
  * CHRONOS — Premium Watch Gallery
  * Main Public Page (Single Page)
  */
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/helpers.php';
 
 try {
     $db = getDB();
@@ -18,6 +18,13 @@ try {
     $featured = 0;
 }
 
+// Load all settings
+$S = getAllSettings();
+$logoText = $S['logo_text'] ?? 'CHRONOS';
+$logoImage = $S['logo_image'] ?? '';
+$siteTitle = $S['site_title'] ?? 'CHRONOS — Premium Watch Gallery';
+$metaDesc = $S['meta_description'] ?? '';
+
 function formatThaiPrice($price) {
     return number_format($price, 0, '.', ',');
 }
@@ -26,14 +33,17 @@ function getTypeLabel($type) {
     $labels = ['analog' => '⏱ Analog', 'digital' => '🔢 Digital', 'both' => '⌚ Analog + Digital'];
     return $labels[$type] ?? $type;
 }
+
+// Check if any contact info exists
+$hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !empty($S['contact_line']) || !empty($S['contact_facebook']) || !empty($S['contact_address']);
 ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CHRONOS — แกลเลอรี่นาฬิกาเครื่องใหญ่ระดับพรีเมียม Analog และ Digital คุณภาพสูง">
-    <title>CHRONOS — Premium Watch Gallery</title>
+    <meta name="description" content="<?= htmlspecialchars($metaDesc) ?>">
+    <title><?= htmlspecialchars($siteTitle) ?></title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌚</text></svg>">
 </head>
@@ -43,13 +53,19 @@ function getTypeLabel($type) {
 <nav class="navbar" id="navbar">
     <div class="container">
         <a href="#" class="navbar-brand">
-            <div class="brand-icon">⌚</div>
-            <div class="brand-text">CHRO<span>NOS</span></div>
+            <?php if ($logoImage && file_exists(UPLOAD_DIR . $logoImage)): ?>
+                <img src="<?= htmlspecialchars(UPLOAD_URL . $logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" class="brand-logo-img">
+            <?php else: ?>
+                <div class="brand-icon">⌚</div>
+            <?php endif; ?>
+            <div class="brand-text"><?= htmlspecialchars($logoText) ?></div>
         </a>
         <ul class="navbar-nav" id="navMenu">
             <li><a href="#hero">หน้าแรก</a></li>
             <li><a href="#products">สินค้า</a></li>
-            <li><a href="#footer">ติดต่อ</a></li>
+            <?php if ($hasContact): ?>
+                <li><a href="#contact">ติดต่อ</a></li>
+            <?php endif; ?>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
             <span></span><span></span><span></span>
@@ -70,17 +86,16 @@ function getTypeLabel($type) {
     </div>
 
     <div class="hero-content">
-        <div class="hero-overline">✦ Premium Watch Gallery ✦</div>
+        <div class="hero-overline"><?= htmlspecialchars($S['hero_overline'] ?? '✦ Premium Watch Gallery ✦') ?></div>
         <h1 class="hero-title">
-            <span class="line1">นาฬิกาเครื่องใหญ่</span>
-            <span class="line2">ระดับพรีเมียม</span>
+            <span class="line1"><?= htmlspecialchars($S['hero_title_1'] ?? 'นาฬิกาเครื่องใหญ่') ?></span>
+            <span class="line2"><?= htmlspecialchars($S['hero_title_2'] ?? 'ระดับพรีเมียม') ?></span>
         </h1>
         <p class="hero-desc">
-            คอลเลกชันนาฬิกาเครื่องใหญ่คัดสรรพิเศษ ทั้ง Analog และ Digital
-            จากแบรนด์ชั้นนำระดับโลก ตอบโจทย์ทุกไลฟ์สไตล์
+            <?= htmlspecialchars($S['hero_desc'] ?? 'คอลเลกชันนาฬิกาเครื่องใหญ่คัดสรรพิเศษ ทั้ง Analog และ Digital จากแบรนด์ชั้นนำระดับโลก ตอบโจทย์ทุกไลฟ์สไตล์') ?>
         </p>
         <a href="#products" class="hero-cta">
-            ชมคอลเลกชัน →
+            <?= htmlspecialchars($S['hero_cta_text'] ?? 'ชมคอลเลกชัน →') ?>
         </a>
     </div>
 
@@ -107,8 +122,8 @@ function getTypeLabel($type) {
                 <div class="stat-label">สินค้าแนะนำ</div>
             </div>
             <div class="stat-item reveal">
-                <div class="stat-number">100%</div>
-                <div class="stat-label">ของแท้รับประกัน</div>
+                <div class="stat-number"><?= htmlspecialchars($S['stat_custom_value'] ?? '100%') ?></div>
+                <div class="stat-label"><?= htmlspecialchars($S['stat_custom_label'] ?? 'ของแท้รับประกัน') ?></div>
             </div>
         </div>
     </div>
@@ -118,9 +133,9 @@ function getTypeLabel($type) {
 <section class="products-section" id="products">
     <div class="container">
         <div class="products-header reveal">
-            <div class="section-badge">✦ Our Collection</div>
-            <h2 class="section-title">คอลเลกชัน<span>นาฬิกา</span></h2>
-            <p class="section-subtitle">รวมนาฬิกาเครื่องใหญ่คุณภาพสูงทั้ง Analog และ Digital จากแบรนด์ระดับโลก</p>
+            <div class="section-badge"><?= htmlspecialchars($S['section_badge'] ?? '✦ Our Collection') ?></div>
+            <h2 class="section-title"><?= htmlspecialchars($S['section_title_1'] ?? 'คอลเลกชัน') ?><span><?= htmlspecialchars($S['section_title_2'] ?? 'นาฬิกา') ?></span></h2>
+            <p class="section-subtitle"><?= htmlspecialchars($S['section_subtitle'] ?? 'รวมนาฬิกาเครื่องใหญ่คุณภาพสูงทั้ง Analog และ Digital จากแบรนด์ระดับโลก') ?></p>
             
             <div class="filter-tabs">
                 <button class="filter-tab active" data-filter="all">ทั้งหมด</button>
@@ -202,26 +217,85 @@ function getTypeLabel($type) {
     </div>
 </div>
 
+<!-- ====== Contact Section ====== -->
+<?php if ($hasContact): ?>
+<section class="contact-section" id="contact">
+    <div class="container">
+        <div class="products-header reveal" style="margin-bottom: 48px;">
+            <div class="section-badge">✦ Contact Us</div>
+            <h2 class="section-title">ติดต่อ<span>เรา</span></h2>
+        </div>
+        <div class="contact-grid reveal">
+            <?php if (!empty($S['contact_phone'])): ?>
+            <a href="tel:<?= htmlspecialchars($S['contact_phone']) ?>" class="contact-card">
+                <div class="contact-icon">📱</div>
+                <div class="contact-label">โทรศัพท์</div>
+                <div class="contact-value"><?= htmlspecialchars($S['contact_phone']) ?></div>
+            </a>
+            <?php endif; ?>
+
+            <?php if (!empty($S['contact_email'])): ?>
+            <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="contact-card">
+                <div class="contact-icon">📧</div>
+                <div class="contact-label">อีเมล</div>
+                <div class="contact-value"><?= htmlspecialchars($S['contact_email']) ?></div>
+            </a>
+            <?php endif; ?>
+
+            <?php if (!empty($S['contact_line'])): ?>
+            <a href="https://line.me/R/ti/p/<?= htmlspecialchars($S['contact_line']) ?>" target="_blank" class="contact-card">
+                <div class="contact-icon">💚</div>
+                <div class="contact-label">LINE</div>
+                <div class="contact-value"><?= htmlspecialchars($S['contact_line']) ?></div>
+            </a>
+            <?php endif; ?>
+
+            <?php if (!empty($S['contact_facebook'])): ?>
+            <a href="<?= htmlspecialchars($S['contact_facebook']) ?>" target="_blank" class="contact-card">
+                <div class="contact-icon">📘</div>
+                <div class="contact-label">Facebook</div>
+                <div class="contact-value">เยี่ยมชมเพจ →</div>
+            </a>
+            <?php endif; ?>
+
+            <?php if (!empty($S['contact_address'])): ?>
+            <div class="contact-card contact-card-wide">
+                <div class="contact-icon">📍</div>
+                <div class="contact-label">ที่อยู่</div>
+                <div class="contact-value"><?= nl2br(htmlspecialchars($S['contact_address'])) ?></div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
 <!-- ====== Footer ====== -->
 <footer class="footer" id="footer">
     <div class="container">
         <div class="footer-top">
             <div>
-                <div class="footer-brand">CHRO<span>NOS</span></div>
-                <div class="footer-tagline">นาฬิกาเครื่องใหญ่ระดับพรีเมียม</div>
+                <div class="footer-brand">
+                    <?php if ($logoImage && file_exists(UPLOAD_DIR . $logoImage)): ?>
+                        <img src="<?= htmlspecialchars(UPLOAD_URL . $logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" class="footer-logo-img">
+                    <?php else: ?>
+                        <?= htmlspecialchars($logoText) ?>
+                    <?php endif; ?>
+                </div>
+                <div class="footer-tagline"><?= htmlspecialchars($S['footer_tagline'] ?? 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม') ?></div>
             </div>
             <ul class="footer-links">
                 <li><a href="#hero">หน้าแรก</a></li>
                 <li><a href="#products">สินค้า</a></li>
+                <?php if ($hasContact): ?>
+                    <li><a href="#contact">ติดต่อ</a></li>
+                <?php endif; ?>
                 <li><a href="admin/">จัดการระบบ</a></li>
             </ul>
         </div>
         <div class="footer-bottom">
             <div class="footer-copy">
-                © <?= date('Y') ?> <a href="#">CHRONOS</a>. All rights reserved.
-            </div>
-            <div class="footer-copy">
-                Premium Watch Gallery — Analog & Digital
+                © <?= date('Y') ?> <?= htmlspecialchars($S['footer_copyright'] ?? 'CHRONOS. All rights reserved.') ?>
             </div>
         </div>
     </div>

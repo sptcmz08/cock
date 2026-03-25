@@ -31,6 +31,9 @@ $products = $db->query("SELECT * FROM products ORDER BY sort_order ASC, created_
             <a href="products.php" class="active">
                 <span class="nav-icon">⌚</span> จัดการสินค้า
             </a>
+            <a href="settings.php">
+                <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
+            </a>
             <a href="../" target="_blank">
                 <span class="nav-icon">🌐</span> ดูเว็บไซต์
             </a>

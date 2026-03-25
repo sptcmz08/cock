@@ -12,6 +12,49 @@ CREATE TABLE `admins` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- ตาราง site_settings
+CREATE TABLE `site_settings` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `setting_key` VARCHAR(100) NOT NULL UNIQUE,
+    `setting_value` TEXT,
+    `setting_type` ENUM('text','image','textarea') NOT NULL DEFAULT 'text',
+    `setting_group` VARCHAR(50) NOT NULL DEFAULT 'general',
+    `setting_label` VARCHAR(255) NOT NULL DEFAULT '',
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Default site settings
+INSERT INTO `site_settings` (`setting_key`, `setting_value`, `setting_type`, `setting_group`, `setting_label`) VALUES
+-- Logo
+('logo_text', 'CHRONOS', 'text', 'logo', 'ชื่อ Logo'),
+('logo_image', '', 'image', 'logo', 'รูป Logo (ถ้ามีจะแสดงแทนข้อความ)'),
+-- SEO
+('site_title', 'CHRONOS — Premium Watch Gallery', 'text', 'seo', 'ชื่อเว็บไซต์ (Title Tag)'),
+('meta_description', 'CHRONOS — แกลเลอรี่นาฬิกาเครื่องใหญ่ระดับพรีเมียม Analog และ Digital คุณภาพสูง', 'textarea', 'seo', 'Meta Description'),
+-- Hero
+('hero_overline', '✦ Premium Watch Gallery ✦', 'text', 'hero', 'ข้อความเล็กเหนือชื่อ'),
+('hero_title_1', 'นาฬิกาเครื่องใหญ่', 'text', 'hero', 'หัวข้อ Hero บรรทัดที่ 1'),
+('hero_title_2', 'ระดับพรีเมียม', 'text', 'hero', 'หัวข้อ Hero บรรทัดที่ 2'),
+('hero_desc', 'คอลเลกชันนาฬิกาเครื่องใหญ่คัดสรรพิเศษ ทั้ง Analog และ Digital จากแบรนด์ชั้นนำระดับโลก ตอบโจทย์ทุกไลฟ์สไตล์', 'textarea', 'hero', 'คำอธิบาย Hero'),
+('hero_cta_text', 'ชมคอลเลกชัน →', 'text', 'hero', 'ข้อความปุ่ม CTA'),
+-- Products Section
+('section_badge', '✦ Our Collection', 'text', 'section', 'Badge ส่วนสินค้า'),
+('section_title_1', 'คอลเลกชัน', 'text', 'section', 'หัวข้อส่วนสินค้า (ส่วนแรก)'),
+('section_title_2', 'นาฬิกา', 'text', 'section', 'หัวข้อส่วนสินค้า (ส่วนสี — highlight)'),
+('section_subtitle', 'รวมนาฬิกาเครื่องใหญ่คุณภาพสูงทั้ง Analog และ Digital จากแบรนด์ระดับโลก', 'textarea', 'section', 'คำอธิบายส่วนสินค้า'),
+-- Stats custom (4th stat)
+('stat_custom_value', '100%', 'text', 'stats', 'สถิติพิเศษ — ตัวเลข'),
+('stat_custom_label', 'ของแท้รับประกัน', 'text', 'stats', 'สถิติพิเศษ — ป้าย'),
+-- Contact
+('contact_phone', '', 'text', 'contact', 'เบอร์โทรศัพท์'),
+('contact_email', '', 'text', 'contact', 'อีเมล'),
+('contact_line', '', 'text', 'contact', 'LINE ID'),
+('contact_facebook', '', 'text', 'contact', 'Facebook URL'),
+('contact_address', '', 'textarea', 'contact', 'ที่อยู่'),
+-- Footer
+('footer_tagline', 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม', 'text', 'footer', 'Tagline Footer'),
+('footer_copyright', 'CHRONOS. All rights reserved.', 'text', 'footer', 'Copyright Footer');
+
 -- ตาราง products
 CREATE TABLE `products` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
