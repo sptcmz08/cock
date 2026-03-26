@@ -588,6 +588,8 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     transition: var(--transition);
     cursor: pointer;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card::before {
@@ -686,6 +688,9 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
 .card-body {
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .card-brand {
@@ -728,6 +733,7 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     justify-content: space-between;
     padding-top: 16px;
     border-top: 1px solid var(--dark-border);
+    margin-top: auto;
 }
 
 .card-price {
