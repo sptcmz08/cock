@@ -15,7 +15,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHRONOS — จัดการสินค้า</title>
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin.css?v=<?= filemtime(__DIR__ . '/css/admin.css') ?>">
 </head>
 <body>
 <div class="admin-layout">

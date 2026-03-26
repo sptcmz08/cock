@@ -14,7 +14,7 @@ $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE categ
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHRONOS — จัดการประเภทสินค้า</title>
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin.css?v=<?= filemtime(__DIR__ . '/css/admin.css') ?>">
 </head>
 <body>
 <div class="admin-layout">
