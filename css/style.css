@@ -615,7 +615,7 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
 .card-image {
     position: relative;
-    height: auto;
+    height: 280px;
     background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
     overflow: hidden;
     display: flex;
@@ -623,9 +623,8 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
 .card-image img {
     width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
     transition: var(--transition);
 }
 
