@@ -55,7 +55,7 @@ for ($i = 1; $i <= 4; $i++) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?= htmlspecialchars($metaDesc) ?>">
     <title><?= htmlspecialchars($siteTitle) ?></title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=<?= filemtime(__DIR__ . '/css/style.css') ?>">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌚</text></svg>">
 </head>
 <body>
@@ -321,6 +321,6 @@ for ($i = 1; $i <= 4; $i++) {
     </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=<?= filemtime(__DIR__ . '/js/main.js') ?>"></script>
 </body>
 </html>
