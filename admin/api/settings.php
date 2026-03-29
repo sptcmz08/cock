@@ -82,7 +82,7 @@ try {
         }
     }
 
-    echo json_encode(['success' => true, 'message' => "บันทึกสำเร็จ! (อัพเดต {$updated} รายการ)"]);
+    echo json_encode(['success' => true, 'message' => "Settings saved! ({$updated} items updated)"]);
 
 } catch (Exception $ex) {
     http_response_code(500);

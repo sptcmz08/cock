@@ -1,6 +1,6 @@
 <?php
 /**
- * CHRONOS Admin — จัดการประเภทสินค้า
+ * CHRONOS Admin — Category Management
  */
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../db.php';
@@ -9,11 +9,11 @@ $db = getDB();
 $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE category_id = c.id) as product_count FROM categories c ORDER BY c.sort_order ASC, c.id ASC")->fetchAll();
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS — จัดการประเภทสินค้า</title>
+    <title>CHRONOS — Categories</title>
     <link rel="stylesheet" href="css/admin.css?v=<?= filemtime(__DIR__ . '/css/admin.css') ?>">
 </head>
 <body>
@@ -26,43 +26,43 @@ $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE categ
         </div>
         <nav class="sidebar-nav">
             <a href="index.php">
-                <span class="nav-icon">📊</span> แดชบอร์ด
+                <span class="nav-icon">📊</span> Dashboard
             </a>
             <a href="products.php">
-                <span class="nav-icon">⌚</span> จัดการสินค้า
+                <span class="nav-icon">⌚</span> Products
             </a>
             <a href="categories.php" class="active">
-                <span class="nav-icon">📂</span> จัดการประเภท
+                <span class="nav-icon">📂</span> Categories
             </a>
             <a href="settings.php">
-                <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
+                <span class="nav-icon">⚙️</span> Settings
             </a>
             <a href="../" target="_blank">
-                <span class="nav-icon">🌐</span> ดูเว็บไซต์
+                <span class="nav-icon">🌐</span> View Site
             </a>
         </nav>
         <div class="sidebar-footer">
-            <a href="logout.php">🚪 ออกจากระบบ</a>
+            <a href="logout.php">🚪 Logout</a>
         </div>
     </aside>
 
     <!-- Main -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">📂 จัดการ<span>ประเภทสินค้า</span></h1>
-            <button class="btn btn-primary" onclick="showModal()">➕ เพิ่มประเภท</button>
+            <h1 class="page-title">📂 Manage <span>Categories</span></h1>
+            <button class="btn btn-primary" onclick="showModal()">➕ Add Category</button>
         </div>
 
         <div class="table-wrapper">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ไอคอน</th>
-                        <th>ชื่อประเภท</th>
+                        <th>Icon</th>
+                        <th>Name</th>
                         <th>Slug</th>
-                        <th>สินค้า</th>
-                        <th>ลำดับ</th>
-                        <th>จัดการ</th>
+                        <th>Products</th>
+                        <th>Order</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,7 +71,7 @@ $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE categ
                         <td style="font-size:1.4rem;"><?= htmlspecialchars($cat['icon']) ?></td>
                         <td><strong><?= htmlspecialchars($cat['name']) ?></strong></td>
                         <td style="color:var(--gray);font-size:0.82rem;"><?= htmlspecialchars($cat['slug']) ?></td>
-                        <td><span class="type-badge analog"><?= $cat['product_count'] ?> สินค้า</span></td>
+                        <td><span class="type-badge analog"><?= $cat['product_count'] ?> products</span></td>
                         <td><?= $cat['sort_order'] ?></td>
                         <td class="actions">
                             <button class="btn btn-secondary btn-sm" onclick="editCat(<?= htmlspecialchars(json_encode($cat)) ?>)">✏️</button>
@@ -80,7 +80,7 @@ $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE categ
                     </tr>
                     <?php endforeach; ?>
                     <?php if (empty($categories)): ?>
-                    <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray);">ยังไม่มีประเภทสินค้า</td></tr>
+                    <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray);">No categories yet</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -92,7 +92,7 @@ $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE categ
 <div class="admin-modal-overlay" id="modal">
     <div class="admin-modal">
         <div class="modal-header">
-            <h3 id="modalTitle">เพิ่มประเภทสินค้า</h3>
+            <h3 id="modalTitle">Add Category</h3>
             <button class="close-btn" onclick="closeModal()">✕</button>
         </div>
         <form id="catForm">
@@ -100,28 +100,28 @@ $categories = $db->query("SELECT c.*, (SELECT COUNT(*) FROM products WHERE categ
                 <input type="hidden" name="id" id="catId">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>ชื่อประเภท <span class="required">*</span></label>
-                        <input type="text" name="name" id="catName" class="form-control" required placeholder="เช่น Analog, Digital">
+                        <label>Category Name <span class="required">*</span></label>
+                        <input type="text" name="name" id="catName" class="form-control" required placeholder="e.g. Analog, Digital">
                     </div>
                     <div class="form-group">
-                        <label>Slug <small style="color:var(--gray);">(อัตโนมัติถ้าเว้นว่าง)</small></label>
+                        <label>Slug <small style="color:var(--gray);">(auto if empty)</small></label>
                         <input type="text" name="slug" id="catSlug" class="form-control" placeholder="analog">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>ไอคอน (emoji)</label>
+                        <label>Icon (text/emoji)</label>
                         <input type="text" name="icon" id="catIcon" class="form-control" placeholder="⌚" value="⌚">
                     </div>
                     <div class="form-group">
-                        <label>ลำดับการแสดง</label>
+                        <label>Sort Order</label>
                         <input type="number" name="sort_order" id="catSort" class="form-control" value="0">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">ยกเลิก</button>
-                <button type="submit" class="btn btn-primary" id="submitBtn">💾 บันทึก</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">💾 Save</button>
             </div>
         </form>
     </div>
@@ -135,7 +135,7 @@ let editMode = false;
 
 function showModal() {
     editMode = false;
-    document.getElementById('modalTitle').textContent = 'เพิ่มประเภทสินค้า';
+    document.getElementById('modalTitle').textContent = 'Add Category';
     document.getElementById('catForm').reset();
     document.getElementById('catId').value = '';
     document.getElementById('catIcon').value = '⌚';
@@ -144,7 +144,7 @@ function showModal() {
 
 function editCat(cat) {
     editMode = true;
-    document.getElementById('modalTitle').textContent = 'แก้ไขประเภทสินค้า';
+    document.getElementById('modalTitle').textContent = 'Edit Category';
     document.getElementById('catId').value = cat.id;
     document.getElementById('catName').value = cat.name;
     document.getElementById('catSlug').value = cat.slug;
@@ -176,12 +176,12 @@ document.getElementById('catForm').addEventListener('submit', async (e) => {
             showToast(data.message, 'error');
         }
     } catch (err) {
-        showToast('เกิดข้อผิดพลาด', 'error');
+        showToast('An error occurred', 'error');
     }
 });
 
 async function deleteCat(id, name) {
-    if (!confirm(`ลบประเภท "${name}" ?\n\nสินค้าที่อยู่ในประเภทนี้จะถูกตั้งเป็น "ไม่ระบุประเภท"`)) return;
+    if (!confirm(`Delete category "${name}"?\n\nProducts in this category will be set to "No Category".`)) return;
     try {
         const res = await fetch('api/categories.php', {
             method: 'DELETE',
@@ -196,7 +196,7 @@ async function deleteCat(id, name) {
             showToast(data.message, 'error');
         }
     } catch (err) {
-        showToast('เกิดข้อผิดพลาด', 'error');
+        showToast('An error occurred', 'error');
     }
 }
 

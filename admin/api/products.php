@@ -76,7 +76,7 @@ function handleCreate($db) {
 
     // Validation
     if (!$name || !$brand) {
-        echo json_encode(['success' => false, 'message' => 'กรุณากรอกชื่อสินค้าและแบรนด์']);
+        echo json_encode(['success' => false, 'message' => 'Please enter product name and brand']);
         return;
     }
 
@@ -86,7 +86,7 @@ function handleCreate($db) {
     $stmt = $db->prepare("INSERT INTO products (name, brand, price, description, category_id, features, image, is_featured, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$name, $brand, $price, $description, $category_id, $features, $imageName, $is_featured, $sort_order]);
 
-    echo json_encode(['success' => true, 'message' => 'เพิ่มสินค้าสำเร็จ!', 'id' => $db->lastInsertId()]);
+    echo json_encode(['success' => true, 'message' => 'Product added successfully!', 'id' => $db->lastInsertId()]);
 }
 
 /* ==================== UPDATE ==================== */
@@ -103,7 +103,7 @@ function handleUpdate($db) {
     $existing = $stmt->fetch();
 
     if (!$existing) {
-        echo json_encode(['success' => false, 'message' => 'ไม่พบสินค้า']);
+        echo json_encode(['success' => false, 'message' => 'Product not found']);
         return;
     }
 
@@ -128,7 +128,7 @@ function handleUpdate($db) {
     $stmt = $db->prepare("UPDATE products SET name=?, brand=?, price=?, description=?, category_id=?, features=?, image=?, is_featured=?, sort_order=? WHERE id=?");
     $stmt->execute([$name, $brand, $price, $description, $category_id, $features, $imageName, $is_featured, $sort_order, $id]);
 
-    echo json_encode(['success' => true, 'message' => 'แก้ไขสินค้าสำเร็จ!']);
+    echo json_encode(['success' => true, 'message' => 'Product updated successfully!']);
 }
 
 /* ==================== DELETE ==================== */
@@ -145,7 +145,7 @@ function handleDelete($db) {
     $product = $stmt->fetch();
 
     if (!$product) {
-        echo json_encode(['success' => false, 'message' => 'ไม่พบสินค้า']);
+        echo json_encode(['success' => false, 'message' => 'Product not found']);
         return;
     }
 
@@ -156,7 +156,7 @@ function handleDelete($db) {
     $stmt = $db->prepare("DELETE FROM products WHERE id = ?");
     $stmt->execute([$id]);
 
-    echo json_encode(['success' => true, 'message' => 'ลบสินค้าสำเร็จ!']);
+    echo json_encode(['success' => true, 'message' => 'Product deleted successfully!']);
 }
 
 /* ==================== Image Helpers ==================== */

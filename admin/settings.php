@@ -1,6 +1,6 @@
 <?php
 /**
- * CHRONOS Admin — ตั้งค่าเว็บไซต์
+ * CHRONOS Admin — Site Settings
  */
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../db.php';
@@ -18,11 +18,11 @@ function val($settings, $key) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS — ตั้งค่าเว็บไซต์</title>
+    <title>CHRONOS — Settings</title>
     <link rel="stylesheet" href="css/admin.css?v=<?= filemtime(__DIR__ . '/css/admin.css') ?>">
 </head>
 <body>
@@ -35,31 +35,31 @@ function val($settings, $key) {
         </div>
         <nav class="sidebar-nav">
             <a href="index.php">
-                <span class="nav-icon">📊</span> แดชบอร์ด
+                <span class="nav-icon">📊</span> Dashboard
             </a>
             <a href="products.php">
-                <span class="nav-icon">⌚</span> จัดการสินค้า
+                <span class="nav-icon">⌚</span> Products
             </a>
             <a href="categories.php">
-                <span class="nav-icon">📂</span> จัดการประเภท
+                <span class="nav-icon">📂</span> Categories
             </a>
             <a href="settings.php" class="active">
-                <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
+                <span class="nav-icon">⚙️</span> Settings
             </a>
             <a href="../" target="_blank">
-                <span class="nav-icon">🌐</span> ดูเว็บไซต์
+                <span class="nav-icon">🌐</span> View Site
             </a>
         </nav>
         <div class="sidebar-footer">
-            <a href="logout.php">🚪 ออกจากระบบ</a>
+            <a href="logout.php">🚪 Logout</a>
         </div>
     </aside>
 
     <!-- Main -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">⚙️ ตั้งค่า<span>เว็บไซต์</span></h1>
-            <button class="btn btn-primary" onclick="saveAllSettings()" id="saveBtn">💾 บันทึกทั้งหมด</button>
+            <h1 class="page-title">⚙️ Site <span>Settings</span></h1>
+            <button class="btn btn-primary" onclick="saveAllSettings()" id="saveBtn">💾 Save All</button>
         </div>
 
         <form id="settingsForm" enctype="multipart/form-data">
@@ -67,15 +67,15 @@ function val($settings, $key) {
             <!-- Logo -->
             <div class="settings-section">
                 <div class="settings-section-header">
-                    <h3>🏷 Logo & ชื่อเว็บ</h3>
+                    <h3>🏷 Logo & Brand</h3>
                 </div>
                 <div class="settings-section-body">
                     <div class="form-group">
-                        <label>ชื่อ Logo <small style="color:var(--gray);">(แสดงบน Navbar / Footer)</small></label>
+                        <label>Logo Text <small style="color:var(--gray);">(shown in Navbar / Footer)</small></label>
                         <input type="text" name="logo_text" class="form-control" value="<?= val($settings, 'logo_text') ?>" placeholder="CHRONOS">
                     </div>
                     <div class="form-group">
-                        <label>รูป Logo <small style="color:var(--gray);">(ถ้ามี จะแสดงแทนข้อความ)</small></label>
+                        <label>Logo Image <small style="color:var(--gray);">(replaces text if provided)</small></label>
                         <input type="file" name="logo_image" class="form-control" accept="image/*" onchange="previewLogo(this)">
                         <div class="image-preview-box" id="logoPreview">
                             <?php
@@ -83,9 +83,9 @@ function val($settings, $key) {
                             if ($logoImg && file_exists(UPLOAD_DIR . $logoImg)):
                             ?>
                                 <img src="../uploads/products/<?= htmlspecialchars($logoImg) ?>" alt="Logo">
-                                <button type="button" class="remove-img-btn" onclick="removeLogo()">✕ ลบรูป</button>
+                                <button type="button" class="remove-img-btn" onclick="removeLogo()">✕ Remove</button>
                             <?php else: ?>
-                                <div class="preview-placeholder"><span>🏷</span><p>ยังไม่มีรูป Logo</p></div>
+                                <div class="preview-placeholder"><span>🏷</span><p>No logo image</p></div>
                             <?php endif; ?>
                         </div>
                         <input type="hidden" name="remove_logo" id="removeLogo" value="0">
@@ -100,7 +100,7 @@ function val($settings, $key) {
                 </div>
                 <div class="settings-section-body">
                     <div class="form-group">
-                        <label>ชื่อเว็บไซต์ (Title Tag)</label>
+                        <label>Site Title (Title Tag)</label>
                         <input type="text" name="site_title" class="form-control" value="<?= val($settings, 'site_title') ?>">
                     </div>
                     <div class="form-group">
@@ -117,25 +117,25 @@ function val($settings, $key) {
                 </div>
                 <div class="settings-section-body">
                     <div class="form-group">
-                        <label>ข้อความเล็กเหนือชื่อ (Overline)</label>
+                        <label>Overline Text</label>
                         <input type="text" name="hero_overline" class="form-control" value="<?= val($settings, 'hero_overline') ?>">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>หัวข้อ Hero บรรทัดที่ 1</label>
+                            <label>Hero Title Line 1</label>
                             <input type="text" name="hero_title_1" class="form-control" value="<?= val($settings, 'hero_title_1') ?>">
                         </div>
                         <div class="form-group">
-                            <label>หัวข้อ Hero บรรทัดที่ 2 <small style="color:var(--gold);">(สีทอง)</small></label>
+                            <label>Hero Title Line 2 <small style="color:var(--gold);">(gold color)</small></label>
                             <input type="text" name="hero_title_2" class="form-control" value="<?= val($settings, 'hero_title_2') ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>คำอธิบาย Hero</label>
+                        <label>Hero Description</label>
                         <textarea name="hero_desc" class="form-control"><?= val($settings, 'hero_desc') ?></textarea>
                     </div>
                     <div class="form-group">
-                        <label>ข้อความปุ่ม CTA</label>
+                        <label>CTA Button Text</label>
                         <input type="text" name="hero_cta_text" class="form-control" value="<?= val($settings, 'hero_cta_text') ?>">
                     </div>
                 </div>
@@ -144,7 +144,7 @@ function val($settings, $key) {
             <!-- Products Section -->
             <div class="settings-section">
                 <div class="settings-section-header">
-                    <h3>📦 ส่วนแสดงสินค้า</h3>
+                    <h3>📦 Products Section</h3>
                 </div>
                 <div class="settings-section-body">
                     <div class="form-group">
@@ -153,16 +153,16 @@ function val($settings, $key) {
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>หัวข้อ (ส่วนแรก)</label>
+                            <label>Title (Part 1)</label>
                             <input type="text" name="section_title_1" class="form-control" value="<?= val($settings, 'section_title_1') ?>">
                         </div>
                         <div class="form-group">
-                            <label>หัวข้อ (ส่วนสี — highlight) <small style="color:var(--gold);">(สีทอง)</small></label>
+                            <label>Title (Part 2 — highlight) <small style="color:var(--gold);">(gold color)</small></label>
                             <input type="text" name="section_title_2" class="form-control" value="<?= val($settings, 'section_title_2') ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>คำอธิบาย</label>
+                        <label>Subtitle</label>
                         <textarea name="section_subtitle" class="form-control"><?= val($settings, 'section_subtitle') ?></textarea>
                     </div>
                 </div>
@@ -171,18 +171,18 @@ function val($settings, $key) {
             <!-- Stats (all 4) -->
             <div class="settings-section">
                 <div class="settings-section-header">
-                    <h3>📊 สถิติ (4 ช่อง)</h3>
-                    <small style="color:var(--gray);">พิมพ์ auto ในช่องตัวเลข = นับอัตโนมัติ</small>
+                    <h3>📊 Stats Bar (4 slots)</h3>
+                    <small style="color:var(--gray);">Type "auto" in value field = auto count from database</small>
                 </div>
                 <div class="settings-section-body">
                     <?php for ($i = 1; $i <= 4; $i++): ?>
                     <div class="form-row" style="margin-bottom:8px;">
                         <div class="form-group">
-                            <label>สถิติ <?= $i ?> — ตัวเลข<?= $i <= 3 ? ' <small style="color:var(--gray);">(auto = นับอัตโนมัติ)</small>' : '' ?></label>
+                            <label>Stat <?= $i ?> — Value<?= $i <= 3 ? ' <small style="color:var(--gray);">(auto = auto count)</small>' : '' ?></label>
                             <input type="text" name="stat_<?= $i ?>_value" class="form-control" value="<?= val($settings, 'stat_'.$i.'_value') ?>">
                         </div>
                         <div class="form-group">
-                            <label>สถิติ <?= $i ?> — ป้าย</label>
+                            <label>Stat <?= $i ?> — Label</label>
                             <input type="text" name="stat_<?= $i ?>_label" class="form-control" value="<?= val($settings, 'stat_'.$i.'_label') ?>">
                         </div>
                     </div>
@@ -193,16 +193,16 @@ function val($settings, $key) {
             <!-- Contact -->
             <div class="settings-section">
                 <div class="settings-section-header">
-                    <h3>📞 ข้อมูลติดต่อ</h3>
+                    <h3>📞 Contact Info</h3>
                 </div>
                 <div class="settings-section-body">
                     <div class="form-row">
                         <div class="form-group">
-                            <label>📱 เบอร์โทรศัพท์</label>
+                            <label>📱 Phone</label>
                             <input type="text" name="contact_phone" class="form-control" value="<?= val($settings, 'contact_phone') ?>" placeholder="08x-xxx-xxxx">
                         </div>
                         <div class="form-group">
-                            <label>📧 อีเมล</label>
+                            <label>📧 Email</label>
                             <input type="text" name="contact_email" class="form-control" value="<?= val($settings, 'contact_email') ?>" placeholder="info@example.com">
                         </div>
                     </div>
@@ -217,7 +217,7 @@ function val($settings, $key) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>📍 ที่อยู่</label>
+                        <label>📍 Address</label>
                         <textarea name="contact_address" class="form-control"><?= val($settings, 'contact_address') ?></textarea>
                     </div>
                 </div>
@@ -246,7 +246,7 @@ function val($settings, $key) {
 
         <!-- Floating Save Button -->
         <div class="floating-save">
-            <button class="btn btn-primary" onclick="saveAllSettings()" id="saveBtn2">💾 บันทึกทั้งหมด</button>
+            <button class="btn btn-primary" onclick="saveAllSettings()" id="saveBtn2">💾 Save All</button>
         </div>
     </main>
 </div>
@@ -260,7 +260,7 @@ async function saveAllSettings() {
     const formData = new FormData(form);
     
     const btns = [document.getElementById('saveBtn'), document.getElementById('saveBtn2')];
-    btns.forEach(b => { if(b) { b.disabled = true; b.textContent = '⏳ กำลังบันทึก...'; }});
+    btns.forEach(b => { if(b) { b.disabled = true; b.textContent = '⏳ Saving...'; }});
 
     try {
         const res = await fetch('api/settings.php', { method: 'POST', body: formData });
@@ -268,12 +268,12 @@ async function saveAllSettings() {
         if (data.success) {
             showToast(data.message, 'success');
         } else {
-            showToast(data.message || 'เกิดข้อผิดพลาด', 'error');
+            showToast(data.message || 'An error occurred', 'error');
         }
     } catch (err) {
-        showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
+        showToast('Error: ' + err.message, 'error');
     } finally {
-        btns.forEach(b => { if(b) { b.disabled = false; b.textContent = '💾 บันทึกทั้งหมด'; }});
+        btns.forEach(b => { if(b) { b.disabled = false; b.textContent = '💾 Save All'; }});
     }
 }
 
@@ -291,7 +291,7 @@ function previewLogo(input) {
 
 function removeLogo() {
     document.getElementById('removeLogo').value = '1';
-    document.getElementById('logoPreview').innerHTML = '<div class="preview-placeholder"><span>🏷</span><p>จะลบรูปเมื่อบันทึก</p></div>';
+    document.getElementById('logoPreview').innerHTML = '<div class="preview-placeholder"><span>🏷</span><p>Will be removed on save</p></div>';
     // Clear file input
     const fileInput = document.querySelector('input[name="logo_image"]');
     if (fileInput) fileInput.value = '';

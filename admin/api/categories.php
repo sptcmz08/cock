@@ -29,7 +29,7 @@ try {
             $sort = intval($_POST['sort_order'] ?? 0);
 
             if (!$name) {
-                echo json_encode(['success' => false, 'message' => 'กรุณาระบุชื่อประเภท']);
+                echo json_encode(['success' => false, 'message' => 'Please enter category name']);
                 exit;
             }
 
@@ -40,7 +40,7 @@ try {
 
             $stmt = $db->prepare("INSERT INTO categories (name, slug, icon, sort_order) VALUES (?, ?, ?, ?)");
             $stmt->execute([$name, $slug, $icon, $sort]);
-            echo json_encode(['success' => true, 'message' => 'เพิ่มประเภทสำเร็จ', 'id' => $db->lastInsertId()]);
+            echo json_encode(['success' => true, 'message' => 'Category added successfully', 'id' => $db->lastInsertId()]);
             break;
 
         case 'PUT':
@@ -52,13 +52,13 @@ try {
             $sort = intval($data['sort_order'] ?? 0);
 
             if (!$id || !$name) {
-                echo json_encode(['success' => false, 'message' => 'ข้อมูลไม่ครบ']);
+                echo json_encode(['success' => false, 'message' => 'Incomplete data']);
                 exit;
             }
 
             $stmt = $db->prepare("UPDATE categories SET name=?, slug=?, icon=?, sort_order=? WHERE id=?");
             $stmt->execute([$name, $slug, $icon, $sort, $id]);
-            echo json_encode(['success' => true, 'message' => 'แก้ไขประเภทสำเร็จ']);
+            echo json_encode(['success' => true, 'message' => 'Category updated successfully']);
             break;
 
         case 'DELETE':
@@ -66,7 +66,7 @@ try {
             $id = intval($data['id'] ?? 0);
 
             if (!$id) {
-                echo json_encode(['success' => false, 'message' => 'ไม่พบ ID']);
+                echo json_encode(['success' => false, 'message' => 'ID not found']);
                 exit;
             }
 
@@ -76,7 +76,7 @@ try {
 
             $stmt = $db->prepare("DELETE FROM categories WHERE id = ?");
             $stmt->execute([$id]);
-            echo json_encode(['success' => true, 'message' => 'ลบประเภทสำเร็จ']);
+            echo json_encode(['success' => true, 'message' => 'Category deleted successfully']);
             break;
     }
 } catch (Exception $e) {

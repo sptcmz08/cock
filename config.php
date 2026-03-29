@@ -12,7 +12,7 @@ define('DB_CHARSET', 'utf8mb4');
 
 // Application
 define('SITE_NAME', 'CHRONOS — Premium Watch Gallery');
-define('SITE_TAGLINE', 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม');
+define('SITE_TAGLINE', 'Premium Large Wall Clocks');
 
 // Auto-detect BASE_URL from script path
 $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));

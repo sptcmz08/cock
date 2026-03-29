@@ -10,11 +10,11 @@ $products = $db->query("SELECT p.*, c.name as category_name, c.icon as category_
 $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id ASC")->fetchAll();
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS — จัดการสินค้า</title>
+    <title>CHRONOS — Products</title>
     <link rel="stylesheet" href="css/admin.css?v=<?= filemtime(__DIR__ . '/css/admin.css') ?>">
 </head>
 <body>
@@ -27,55 +27,55 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
         </div>
         <nav class="sidebar-nav">
             <a href="index.php">
-                <span class="nav-icon">📊</span> แดชบอร์ด
+                <span class="nav-icon">📊</span> Dashboard
             </a>
             <a href="products.php" class="active">
-                <span class="nav-icon">⌚</span> จัดการสินค้า
+                <span class="nav-icon">⌚</span> Products
             </a>
             <a href="categories.php">
-                <span class="nav-icon">📂</span> จัดการประเภท
+                <span class="nav-icon">📂</span> Categories
             </a>
             <a href="settings.php">
-                <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
+                <span class="nav-icon">⚙️</span> Settings
             </a>
             <a href="../" target="_blank">
-                <span class="nav-icon">🌐</span> ดูเว็บไซต์
+                <span class="nav-icon">🌐</span> View Site
             </a>
         </nav>
         <div class="sidebar-footer">
-            <a href="logout.php">🚪 ออกจากระบบ</a>
+            <a href="logout.php">🚪 Logout</a>
         </div>
     </aside>
 
     <!-- Main -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">⌚ จัดการ<span>สินค้า</span></h1>
-            <button class="btn btn-primary" onclick="openAddModal()">➕ เพิ่มสินค้า</button>
+            <h1 class="page-title">⌚ Manage <span>Products</span></h1>
+            <button class="btn btn-primary" onclick="openAddModal()">➕ Add Product</button>
         </div>
 
         <!-- Products Table -->
         <div class="table-wrapper">
             <div class="table-header">
-                <h3>รายการสินค้าทั้งหมด (<?= count($products) ?> รายการ)</h3>
+                <h3>All Products (<?= count($products) ?> items)</h3>
             </div>
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>รูป</th>
-                        <th>ชื่อสินค้า</th>
-                        <th>แบรนด์</th>
-                        <th>ประเภท</th>
-                        <th>ราคา</th>
-                        <th>แนะนำ</th>
-                        <th>จัดการ</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Featured</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($products)): ?>
                         <tr>
                             <td colspan="7" style="text-align: center; padding: 40px; color: var(--gray);">
-                                ยังไม่มีสินค้า — กดปุ่ม "เพิ่มสินค้า" เพื่อเริ่มต้น
+                                No products yet — click "Add Product" to get started
                             </td>
                         </tr>
                     <?php else: ?>
@@ -96,15 +96,15 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
                                     <?php if ($p['category_name']): ?>
                                         <span class="type-badge analog"><?= htmlspecialchars($p['category_icon'] . ' ' . $p['category_name']) ?></span>
                                     <?php else: ?>
-                                        <span class="type-badge" style="color:var(--gray);">— ไม่ระบุ</span>
+                                        <span class="type-badge" style="color:var(--gray);">— None</span>
                                     <?php endif; ?>
                                 </td>
                                 <td style="color: var(--gold); font-weight: 600;">฿<?= number_format($p['price'], 0, '.', ',') ?></td>
                                 <td><?= $p['is_featured'] ? '⭐' : '—' ?></td>
                                 <td>
                                     <div class="actions">
-                                        <button class="btn btn-secondary btn-sm" onclick="openEditModal(<?= htmlspecialchars(json_encode($p)) ?>)">✏️ แก้ไข</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(<?= $p['id'] ?>, '<?= htmlspecialchars(addslashes($p['name'])) ?>')">🗑 ลบ</button>
+                                        <button class="btn btn-secondary btn-sm" onclick="openEditModal(<?= htmlspecialchars(json_encode($p)) ?>)">✏️ Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(<?= $p['id'] ?>, '<?= htmlspecialchars(addslashes($p['name'])) ?>')">🗑 Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -120,7 +120,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
 <div class="admin-modal-overlay" id="productModal">
     <div class="admin-modal">
         <div class="modal-header">
-            <h3 id="modalTitle">เพิ่มสินค้าใหม่</h3>
+            <h3 id="modalTitle">Add New Product</h3>
             <button class="close-btn" onclick="closeProductModal()">✕</button>
         </div>
         <form id="productForm" enctype="multipart/form-data">
@@ -128,23 +128,23 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>ชื่อสินค้า <span class="required">*</span></label>
-                        <input type="text" name="name" id="formName" class="form-control" placeholder="เช่น Grand Seiko SBGA211" required>
+                        <label>Product Name <span class="required">*</span></label>
+                        <input type="text" name="name" id="formName" class="form-control" placeholder="e.g. Grand Seiko SBGA211" required>
                     </div>
                     <div class="form-group">
-                        <label>แบรนด์ <span class="required">*</span></label>
-                        <input type="text" name="brand" id="formBrand" class="form-control" placeholder="เช่น Grand Seiko" required>
+                        <label>Brand <span class="required">*</span></label>
+                        <input type="text" name="brand" id="formBrand" class="form-control" placeholder="e.g. Grand Seiko" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>ราคา (บาท) <span class="required">*</span></label>
+                        <label>Price (THB) <span class="required">*</span></label>
                         <input type="number" name="price" id="formPrice" class="form-control" placeholder="0.00" step="0.01" min="0" required>
                     </div>
                     <div class="form-group">
-                        <label>ประเภท</label>
+                        <label>Category</label>
                         <select name="category_id" id="formCategory" class="form-control">
-                            <option value="">— ไม่ระบุประเภท —</option>
+                            <option value="">— No Category —</option>
                             <?php foreach ($categories as $cat): ?>
                                 <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['icon'] . ' ' . $cat['name']) ?></option>
                             <?php endforeach; ?>
@@ -152,39 +152,39 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>รายละเอียด</label>
-                    <textarea name="description" id="formDesc" class="form-control" placeholder="คำอธิบายสินค้า..."></textarea>
+                    <label>Description</label>
+                    <textarea name="description" id="formDesc" class="form-control" placeholder="Product description..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label>คุณสมบัติเด่น <small style="color: var(--gray);">(คั่นด้วย | เช่น กันน้ำ 200m|Sapphire Crystal)</small></label>
-                    <textarea name="features" id="formFeatures" class="form-control" placeholder="คุณสมบัติ 1|คุณสมบัติ 2|คุณสมบัติ 3"></textarea>
+                    <label>Key Features <small style="color: var(--gray);">(separated by | e.g. Water Resistant 200m|Sapphire Crystal)</small></label>
+                    <textarea name="features" id="formFeatures" class="form-control" placeholder="Feature 1|Feature 2|Feature 3"></textarea>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>ลำดับการแสดง</label>
+                        <label>Sort Order</label>
                         <input type="number" name="sort_order" id="formSort" class="form-control" value="0" min="0">
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; padding-bottom: 4px;">
                         <div class="form-check">
                             <input type="checkbox" name="is_featured" id="formFeatured" value="1">
-                            <label for="formFeatured" style="margin-bottom: 0;">⭐ สินค้าแนะนำ</label>
+                            <label for="formFeatured" style="margin-bottom: 0;">⭐ Featured Product</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>รูปสินค้า</label>
+                    <label>Product Image</label>
                     <input type="file" name="image" id="formImage" class="form-control" accept="image/*" onchange="previewImage(this)">
                     <div class="image-preview-box" id="imagePreview">
                         <div class="preview-placeholder">
                             <span>📷</span>
-                            <p>เลือกรูปภาพสินค้า</p>
+                            <p>Select product image</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeProductModal()">ยกเลิก</button>
-                <button type="submit" class="btn btn-primary" id="submitBtn">💾 บันทึก</button>
+                <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">💾 Save</button>
             </div>
         </form>
     </div>
@@ -198,15 +198,15 @@ const API_URL = 'api/products.php';
 
 /* ==================== Modal ==================== */
 function openAddModal() {
-    document.getElementById('modalTitle').textContent = '➕ เพิ่มสินค้าใหม่';
+    document.getElementById('modalTitle').textContent = '➕ Add New Product';
     document.getElementById('productForm').reset();
     document.getElementById('formId').value = '';
-    document.getElementById('imagePreview').innerHTML = '<div class="preview-placeholder"><span>📷</span><p>เลือกรูปภาพสินค้า</p></div>';
+    document.getElementById('imagePreview').innerHTML = '<div class="preview-placeholder"><span>📷</span><p>Select product image</p></div>';
     document.getElementById('productModal').classList.add('active');
 }
 
 function openEditModal(product) {
-    document.getElementById('modalTitle').textContent = '✏️ แก้ไขสินค้า';
+    document.getElementById('modalTitle').textContent = '✏️ Edit Product';
     document.getElementById('formId').value = product.id;
     document.getElementById('formName').value = product.name;
     document.getElementById('formBrand').value = product.brand;
@@ -222,7 +222,7 @@ function openEditModal(product) {
     if (product.image) {
         preview.innerHTML = `<img src="../uploads/products/${product.image}" alt="Current">`;
     } else {
-        preview.innerHTML = '<div class="preview-placeholder"><span>📷</span><p>ยังไม่มีรูปภาพ</p></div>';
+        preview.innerHTML = '<div class="preview-placeholder"><span>📷</span><p>No image</p></div>';
     }
 
     document.getElementById('productModal').classList.add('active');
@@ -259,7 +259,7 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
 
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
-    submitBtn.textContent = '⏳ กำลังบันทึก...';
+    submitBtn.textContent = '⏳ Saving...';
 
     try {
         const url = isEdit ? `${API_URL}?id=${id}` : API_URL;
@@ -272,23 +272,23 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
         const data = await res.json();
 
         if (data.success) {
-            showToast(data.message || (isEdit ? 'แก้ไขสำเร็จ!' : 'เพิ่มสินค้าสำเร็จ!'), 'success');
+            showToast(data.message || (isEdit ? 'Updated successfully!' : 'Product added!'), 'success');
             closeProductModal();
             setTimeout(() => location.reload(), 800);
         } else {
-            showToast(data.message || 'เกิดข้อผิดพลาด', 'error');
+            showToast(data.message || 'An error occurred', 'error');
         }
     } catch (err) {
-        showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
+        showToast('Error: ' + err.message, 'error');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = '💾 บันทึก';
+        submitBtn.textContent = '💾 Save';
     }
 });
 
 /* ==================== Delete ==================== */
 async function deleteProduct(id, name) {
-    if (!confirm(`ต้องการลบสินค้า "${name}" ใช่หรือไม่?`)) return;
+    if (!confirm(`Delete product "${name}"?`)) return;
 
     try {
         const res = await fetch(`${API_URL}?id=${id}`, {
@@ -297,13 +297,13 @@ async function deleteProduct(id, name) {
         const data = await res.json();
 
         if (data.success) {
-            showToast('ลบสินค้าสำเร็จ!', 'success');
+            showToast('Product deleted!', 'success');
             setTimeout(() => location.reload(), 800);
         } else {
-            showToast(data.message || 'เกิดข้อผิดพลาด', 'error');
+            showToast(data.message || 'An error occurred', 'error');
         }
     } catch (err) {
-        showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
+        showToast('Error: ' + err.message, 'error');
     }
 }
 

@@ -49,7 +49,7 @@ for ($i = 1; $i <= 4; $i++) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,9 +72,9 @@ for ($i = 1; $i <= 4; $i++) {
             <div class="brand-text"><?= htmlspecialchars($logoText) ?></div>
         </a>
         <ul class="navbar-nav" id="navMenu">
-            <li><a href="#hero">หน้าแรก</a></li>
-            <li><a href="#products">สินค้า</a></li>
-            <li><a href="#contact">ติดต่อ</a></li>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
             <span></span><span></span><span></span>
@@ -101,12 +101,12 @@ for ($i = 1; $i <= 4; $i++) {
     <div class="hero-content">
         <div class="hero-overline"><?= htmlspecialchars($S['hero_overline'] ?? '✦ Premium Watch Gallery ✦') ?></div>
         <h1 class="hero-title">
-            <span class="line1"><?= htmlspecialchars($S['hero_title_1'] ?? 'นาฬิกาเครื่องใหญ่') ?></span>
-            <span class="line2"><?= htmlspecialchars($S['hero_title_2'] ?? 'ระดับพรีเมียม') ?></span>
+            <span class="line1"><?= htmlspecialchars($S['hero_title_1'] ?? 'Premium Large') ?></span>
+            <span class="line2"><?= htmlspecialchars($S['hero_title_2'] ?? 'Wall Clocks') ?></span>
         </h1>
         <p class="hero-desc"><?= htmlspecialchars($S['hero_desc'] ?? '') ?></p>
         <a href="#products" class="hero-cta">
-            <?= htmlspecialchars($S['hero_cta_text'] ?? 'ชมคอลเลกชัน →') ?>
+            <?= htmlspecialchars($S['hero_cta_text'] ?? 'View Collection →') ?>
         </a>
     </div>
 
@@ -135,11 +135,11 @@ for ($i = 1; $i <= 4; $i++) {
     <div class="container">
         <div class="products-header reveal">
             <div class="section-badge"><?= htmlspecialchars($S['section_badge'] ?? '✦ Our Collection') ?></div>
-            <h2 class="section-title"><?= htmlspecialchars($S['section_title_1'] ?? 'คอลเลกชัน') ?><span><?= htmlspecialchars($S['section_title_2'] ?? 'นาฬิกา') ?></span></h2>
+            <h2 class="section-title"><?= htmlspecialchars($S['section_title_1'] ?? 'Watch') ?><span><?= htmlspecialchars($S['section_title_2'] ?? 'Collection') ?></span></h2>
             <p class="section-subtitle"><?= htmlspecialchars($S['section_subtitle'] ?? '') ?></p>
             
             <div class="filter-tabs">
-                <button class="filter-tab active" data-filter="all">ทั้งหมด</button>
+                <button class="filter-tab active" data-filter="all">All</button>
                 <?php foreach ($categories as $cat): ?>
                     <button class="filter-tab" data-filter="<?= htmlspecialchars($cat['slug']) ?>"><?= htmlspecialchars($cat['name']) ?></button>
                 <?php endforeach; ?>
@@ -150,7 +150,7 @@ for ($i = 1; $i <= 4; $i++) {
             <?php if (empty($products)): ?>
                 <div class="no-products">
                     <div class="no-products-icon">⌚</div>
-                    <p>ยังไม่มีสินค้าในขณะนี้</p>
+                    <p>No products available at the moment.</p>
                 </div>
             <?php else: ?>
                 <?php foreach ($products as $p): ?>
@@ -177,7 +177,7 @@ for ($i = 1; $i <= 4; $i++) {
                                 <div class="card-badge analog"><?= htmlspecialchars(($p['category_icon'] ?? '') . ' ' . $p['category_name']) ?></div>
                             <?php endif; ?>
                             <?php if ($p['is_featured']): ?>
-                                <div class="card-featured" title="สินค้าแนะนำ">★</div>
+                                <div class="card-featured" title="Featured">★</div>
                             <?php endif; ?>
                         </div>
 
@@ -190,7 +190,7 @@ for ($i = 1; $i <= 4; $i++) {
                                     ฿<?= formatThaiPrice($p['price']) ?>
                                     <small>THB</small>
                                 </div>
-                                <span class="card-view-btn">ดูรายละเอียด →</span>
+                                <span class="card-view-btn">View Details →</span>
                             </div>
                         </div>
                     </div>
@@ -216,7 +216,7 @@ for ($i = 1; $i <= 4; $i++) {
                 <span class="modal-price-label">THB</span>
             </div>
             <p class="modal-desc"></p>
-            <div class="modal-features-title">✦ คุณสมบัติเด่น</div>
+            <div class="modal-features-title">✦ Key Features</div>
             <div class="modal-features"></div>
         </div>
     </div>
@@ -228,13 +228,13 @@ for ($i = 1; $i <= 4; $i++) {
     <div class="container">
         <div class="products-header reveal" style="margin-bottom: 48px;">
             <div class="section-badge">✦ Contact Us</div>
-            <h2 class="section-title">ติดต่อ<span>เรา</span></h2>
+            <h2 class="section-title">Get In <span>Touch</span></h2>
         </div>
         <div class="contact-grid reveal">
             <?php if (!empty($S['contact_phone'])): ?>
             <a href="tel:<?= htmlspecialchars($S['contact_phone']) ?>" class="contact-card">
                 <div class="contact-icon">📱</div>
-                <div class="contact-label">โทรศัพท์</div>
+                <div class="contact-label">Phone</div>
                 <div class="contact-value"><?= htmlspecialchars($S['contact_phone']) ?></div>
             </a>
             <?php endif; ?>
@@ -242,7 +242,7 @@ for ($i = 1; $i <= 4; $i++) {
             <?php if (!empty($S['contact_email'])): ?>
             <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="contact-card">
                 <div class="contact-icon">📧</div>
-                <div class="contact-label">อีเมล</div>
+                <div class="contact-label">Email</div>
                 <div class="contact-value"><?= htmlspecialchars($S['contact_email']) ?></div>
             </a>
             <?php endif; ?>
@@ -259,14 +259,14 @@ for ($i = 1; $i <= 4; $i++) {
             <a href="<?= htmlspecialchars($S['contact_facebook']) ?>" target="_blank" class="contact-card">
                 <div class="contact-icon">📘</div>
                 <div class="contact-label">Facebook</div>
-                <div class="contact-value">เยี่ยมชมเพจ →</div>
+                <div class="contact-value">Visit Page →</div>
             </a>
             <?php endif; ?>
 
             <?php if (!empty($S['contact_address'])): ?>
             <div class="contact-card contact-card-wide">
                 <div class="contact-icon">📍</div>
-                <div class="contact-label">ที่อยู่</div>
+                <div class="contact-label">Address</div>
                 <div class="contact-value"><?= nl2br(htmlspecialchars($S['contact_address'])) ?></div>
             </div>
             <?php endif; ?>
@@ -289,7 +289,7 @@ for ($i = 1; $i <= 4; $i++) {
                         <?= htmlspecialchars($logoText) ?>
                     <?php endif; ?>
                 </div>
-                <div class="footer-tagline"><?= htmlspecialchars($S['footer_tagline'] ?? 'นาฬิกาเครื่องใหญ่ระดับพรีเมียม') ?></div>
+                <div class="footer-tagline"><?= htmlspecialchars($S['footer_tagline'] ?? 'Premium Large Wall Clocks') ?></div>
             </div>
 
             <?php if ($hasContact): ?>
@@ -307,10 +307,10 @@ for ($i = 1; $i <= 4; $i++) {
             <?php endif; ?>
 
             <ul class="footer-links">
-                <li><a href="#hero">หน้าแรก</a></li>
-                <li><a href="#products">สินค้า</a></li>
-                <li><a href="#contact">ติดต่อ</a></li>
-                <li><a href="admin/">จัดการระบบ</a></li>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="admin/">Admin</a></li>
             </ul>
         </div>
         <div class="footer-bottom">

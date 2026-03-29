@@ -617,7 +617,7 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
 .card-image {
     position: relative;
-    height: 280px;
+    height: 360px;
     background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
     overflow: hidden;
     display: flex;

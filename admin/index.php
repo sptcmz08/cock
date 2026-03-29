@@ -12,7 +12,7 @@ $totalFeatured = $db->query("SELECT COUNT(*) FROM products WHERE is_featured=1")
 $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchColumn();
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,32 +29,32 @@ $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchCo
         </div>
         <nav class="sidebar-nav">
             <a href="index.php" class="active">
-                <span class="nav-icon">📊</span> แดชบอร์ด
+                <span class="nav-icon">📊</span> Dashboard
             </a>
             <a href="products.php">
-                <span class="nav-icon">⌚</span> จัดการสินค้า
+                <span class="nav-icon">⌚</span> Products
             </a>
             <a href="categories.php">
-                <span class="nav-icon">📂</span> จัดการประเภท
+                <span class="nav-icon">📂</span> Categories
             </a>
             <a href="settings.php">
-                <span class="nav-icon">⚙️</span> ตั้งค่าเว็บไซต์
+                <span class="nav-icon">⚙️</span> Settings
             </a>
             <a href="../" target="_blank">
-                <span class="nav-icon">🌐</span> ดูเว็บไซต์
+                <span class="nav-icon">🌐</span> View Site
             </a>
         </nav>
         <div class="sidebar-footer">
-            <a href="logout.php">🚪 ออกจากระบบ</a>
+            <a href="logout.php">🚪 Logout</a>
         </div>
     </aside>
 
     <!-- Main -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">📊 แดช<span>บอร์ด</span></h1>
+            <h1 class="page-title">📊 Dash<span>board</span></h1>
             <span style="color: var(--gray); font-size: 0.85rem;">
-                สวัสดี, <strong style="color: var(--gold);"><?= htmlspecialchars($_SESSION['admin_username']) ?></strong>
+                Welcome, <strong style="color: var(--gold);"><?= htmlspecialchars($_SESSION['admin_username']) ?></strong>
             </span>
         </div>
 
@@ -64,28 +64,28 @@ $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchCo
                 <div class="icon">⌚</div>
                 <div class="info">
                     <h3><?= $totalProducts ?></h3>
-                    <p>สินค้าทั้งหมด</p>
+                    <p>Total Products</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="icon">📂</div>
                 <div class="info">
                     <h3><?= $totalCategories ?></h3>
-                    <p>ประเภทสินค้า</p>
+                    <p>Categories</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="icon">⭐</div>
                 <div class="info">
                     <h3><?= $totalFeatured ?></h3>
-                    <p>สินค้าแนะนำ</p>
+                    <p>Featured</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="icon">🏷</div>
                 <div class="info">
                     <h3><?= $totalBrands ?></h3>
-                    <p>แบรนด์</p>
+                    <p>Brands</p>
                 </div>
             </div>
         </div>
@@ -93,14 +93,14 @@ $totalBrands = $db->query("SELECT COUNT(DISTINCT brand) FROM products")->fetchCo
         <!-- Quick Actions -->
         <div class="table-wrapper">
             <div class="table-header">
-                <h3>⚡ จัดการด่วน</h3>
+                <h3>⚡ Quick Actions</h3>
             </div>
             <div style="padding: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-                <a href="products.php" class="btn btn-primary">⌚ จัดการสินค้า</a>
-                <a href="products.php?action=add" class="btn btn-secondary">➕ เพิ่มสินค้าใหม่</a>
-                <a href="categories.php" class="btn btn-secondary">📂 จัดการประเภท</a>
-                <a href="settings.php" class="btn btn-secondary">⚙️ ตั้งค่าเว็บไซต์</a>
-                <a href="../" target="_blank" class="btn btn-secondary">🌐 เปิดเว็บไซต์</a>
+                <a href="products.php" class="btn btn-primary">⌚ Products</a>
+                <a href="products.php?action=add" class="btn btn-secondary">➕ Add Product</a>
+                <a href="categories.php" class="btn btn-secondary">📂 Categories</a>
+                <a href="settings.php" class="btn btn-secondary">⚙️ Settings</a>
+                <a href="../" target="_blank" class="btn btn-secondary">🌐 View Site</a>
             </div>
         </div>
     </main>

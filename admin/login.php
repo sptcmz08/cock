@@ -30,15 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php');
             exit;
         } else {
-            $error = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+            $error = 'Invalid username or password';
         }
     } else {
-        $error = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+        $error = 'Please fill in all fields';
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,15 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="POST" action="">
             <div class="form-group">
-                <label>ชื่อผู้ใช้</label>
+                <label>Username</label>
                 <input type="text" name="username" class="form-control" placeholder="Username" required 
                        value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
             </div>
             <div class="form-group">
-                <label>รหัสผ่าน</label>
+                <label>Password</label>
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
             </div>
-            <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 </div>
