@@ -53,6 +53,12 @@ body {
     color: var(--white);
     line-height: 1.7;
     overflow-x: hidden;
+    animation: pageLoad 0.6s ease-out;
+}
+
+@keyframes pageLoad {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 a { text-decoration: none; color: inherit; }
@@ -470,10 +476,21 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 
 /* ---------- Stats Bar ---------- */
 .stats-bar {
-    background: var(--dark);
+    background: linear-gradient(135deg, rgba(201, 169, 110, 0.03) 0%, var(--dark) 50%, rgba(201, 169, 110, 0.03) 100%);
     border-top: 1px solid var(--dark-border);
     border-bottom: 1px solid var(--dark-border);
-    padding: 40px 0;
+    padding: 48px 0;
+    position: relative;
+}
+
+.stats-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.3), transparent);
 }
 
 .stats-grid {
@@ -484,8 +501,13 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
 }
 
 .stat-item {
-    padding: 16px;
+    padding: 20px 16px;
     position: relative;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-4px);
 }
 
 .stat-item:not(:last-child)::after {
@@ -495,35 +517,28 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     top: 20%;
     height: 60%;
     width: 1px;
-    background: var(--dark-border);
+    background: linear-gradient(to bottom, transparent, rgba(201, 169, 110, 0.2), transparent);
 }
 
-.footer-brand {
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 12px;
-}
-
-.footer-logo-img {
-    max-height: 50px;
-    width: auto;
-    object-fit: contain;
+.stat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    opacity: 0.8;
 }
 
 .stat-number {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 2.4rem;
     font-weight: 700;
     color: var(--gold);
     margin-bottom: 4px;
+    text-shadow: 0 0 40px rgba(201, 169, 110, 0.2);
 }
 
 .stat-label {
     font-family: var(--font-ui);
-    font-size: 0.8rem;
-    letter-spacing: 1px;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gray);
 }
@@ -620,6 +635,8 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     position: relative;
     height: 360px;
     background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+    background-image: radial-gradient(rgba(201, 169, 110, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -631,10 +648,39 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     height: 100%;
     object-fit: contain;
     transition: var(--transition);
+    filter: brightness(0.95);
 }
 
 .product-card:hover .card-image img {
-    transform: scale(1.06);
+    transform: scale(1.04);
+    filter: brightness(1.05);
+}
+
+/* Premium No-Image Placeholder */
+.placeholder-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.placeholder-img svg {
+    width: 64px;
+    height: 64px;
+    color: rgba(201, 169, 110, 0.2);
+}
+
+.placeholder-img::after {
+    content: 'No Image';
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(201, 169, 110, 0.2);
+    margin-top: 12px;
 }
 
 .card-badge {
@@ -715,6 +761,7 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -726,6 +773,7 @@ button { cursor: pointer; border: none; outline: none; font-family: var(--font-b
     margin-bottom: 20px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

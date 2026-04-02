@@ -37,6 +37,7 @@ $hasContact = !empty($S['contact_email']);
 // Stats values — 'auto' means count from DB
 $autoStats = [$totalProducts, $brands, $featured];
 $stats = [];
+$statIcons = ['⌚', '🏆', '⭐', '✓'];
 for ($i = 1; $i <= 4; $i++) {
     $val = $S["stat_{$i}_value"] ?? ($i <= 3 ? 'auto' : '100%');
     if (strtolower(trim($val)) === 'auto' && $i <= 3) {
@@ -44,7 +45,8 @@ for ($i = 1; $i <= 4; $i++) {
     }
     $stats[$i] = [
         'value' => $val,
-        'label' => $S["stat_{$i}_label"] ?? ''
+        'label' => $S["stat_{$i}_label"] ?? '',
+        'icon'  => $statIcons[$i - 1]
     ];
 }
 ?>
@@ -122,6 +124,7 @@ for ($i = 1; $i <= 4; $i++) {
         <div class="stats-grid">
             <?php for ($i = 1; $i <= 4; $i++): ?>
             <div class="stat-item reveal">
+                <div class="stat-icon"><?= $stats[$i]['icon'] ?></div>
                 <div class="stat-number"><?= htmlspecialchars($stats[$i]['value']) ?></div>
                 <div class="stat-label"><?= htmlspecialchars($stats[$i]['label']) ?></div>
             </div>
@@ -171,7 +174,9 @@ for ($i = 1; $i <= 4; $i++) {
                             <?php if ($p['image'] && file_exists(UPLOAD_DIR . $p['image'])): ?>
                                 <img src="<?= htmlspecialchars(UPLOAD_URL . $p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>" loading="lazy">
                             <?php else: ?>
-                                <div class="placeholder-img">⌚</div>
+                                <div class="placeholder-img">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
                             <?php endif; ?>
                             <?php if ($p['category_name']): ?>
                                 <div class="card-badge analog"><?= htmlspecialchars(($p['category_icon'] ?? '') . ' ' . $p['category_name']) ?></div>
@@ -205,7 +210,9 @@ for ($i = 1; $i <= 4; $i++) {
     <div class="modal-content">
         <button class="modal-close">✕</button>
         <div class="modal-image">
-            <div class="placeholder-img">⌚</div>
+            <div class="placeholder-img">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
         </div>
         <div class="modal-body">
             <div class="modal-badge card-badge analog">⏱ Analog</div>
