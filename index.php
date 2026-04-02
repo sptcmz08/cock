@@ -255,9 +255,11 @@ for ($i = 1; $i <= 4; $i++) {
 
 <!-- ====== Footer ====== -->
 <footer class="footer" id="footer">
+    <div class="footer-accent"></div>
     <div class="container">
-        <div class="footer-top">
-            <div>
+        <div class="footer-grid">
+            <!-- Brand Column -->
+            <div class="footer-col footer-col-brand">
                 <div class="footer-brand">
                     <?php if ($logoImage && file_exists(UPLOAD_DIR . $logoImage)): ?>
                         <img src="<?= htmlspecialchars(UPLOAD_URL . $logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" class="footer-logo-img">
@@ -268,23 +270,38 @@ for ($i = 1; $i <= 4; $i++) {
                 <div class="footer-tagline"><?= htmlspecialchars($S['footer_tagline'] ?? 'Premium Large Wall Clocks') ?></div>
             </div>
 
-            <?php if (!empty($S['contact_email'])): ?>
-            <div class="footer-contact-info">
-                <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="footer-contact-item">📧 <?= htmlspecialchars($S['contact_email']) ?></a>
+            <!-- Navigation Column -->
+            <div class="footer-col">
+                <div class="footer-col-title">Navigation</div>
+                <ul class="footer-nav">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </div>
-            <?php endif; ?>
 
-            <ul class="footer-links">
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="admin/">Admin</a></li>
-            </ul>
+            <!-- Contact Column -->
+            <div class="footer-col">
+                <div class="footer-col-title">Contact</div>
+                <?php if (!empty($S['contact_email'])): ?>
+                <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="footer-email-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M22 4L12 13L2 4"/>
+                    </svg>
+                    <?= htmlspecialchars($S['contact_email']) ?>
+                </a>
+                <?php endif; ?>
+            </div>
         </div>
+
         <div class="footer-bottom">
             <div class="footer-copy">
                 © <?= date('Y') ?> <?= htmlspecialchars($S['footer_copyright'] ?? 'CHRONOS. All rights reserved.') ?>
             </div>
+            <a href="#hero" class="footer-back-top">
+                Back to Top ↑
+            </a>
         </div>
     </div>
 </footer>
