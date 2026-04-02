@@ -193,32 +193,12 @@ function val($settings, $key) {
             <!-- Contact -->
             <div class="settings-section">
                 <div class="settings-section-header">
-                    <h3>📞 Contact Info</h3>
+                    <h3>📧 Contact Info</h3>
                 </div>
                 <div class="settings-section-body">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>📱 Phone</label>
-                            <input type="text" name="contact_phone" class="form-control" value="<?= val($settings, 'contact_phone') ?>" placeholder="08x-xxx-xxxx">
-                        </div>
-                        <div class="form-group">
-                            <label>📧 Email</label>
-                            <input type="text" name="contact_email" class="form-control" value="<?= val($settings, 'contact_email') ?>" placeholder="info@example.com">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>💚 LINE ID</label>
-                            <input type="text" name="contact_line" class="form-control" value="<?= val($settings, 'contact_line') ?>" placeholder="@lineid">
-                        </div>
-                        <div class="form-group">
-                            <label>📘 Facebook URL</label>
-                            <input type="text" name="contact_facebook" class="form-control" value="<?= val($settings, 'contact_facebook') ?>" placeholder="https://facebook.com/...">
-                        </div>
-                    </div>
                     <div class="form-group">
-                        <label>📍 Address</label>
-                        <textarea name="contact_address" class="form-control"><?= val($settings, 'contact_address') ?></textarea>
+                        <label>📧 Email</label>
+                        <input type="text" name="contact_email" class="form-control" value="<?= val($settings, 'contact_email') ?>" placeholder="info@example.com">
                     </div>
                 </div>
             </div>

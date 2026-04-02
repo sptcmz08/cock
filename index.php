@@ -32,7 +32,7 @@ function formatThaiPrice($price) {
 }
 
 // Check if any contact info exists
-$hasContact = !empty($S['contact_phone']) || !empty($S['contact_email']) || !empty($S['contact_line']) || !empty($S['contact_facebook']) || !empty($S['contact_address']);
+$hasContact = !empty($S['contact_email']);
 
 // Stats values — 'auto' means count from DB
 $autoStats = [$totalProducts, $brands, $featured];
@@ -231,44 +231,12 @@ for ($i = 1; $i <= 4; $i++) {
             <h2 class="section-title">Get In <span>Touch</span></h2>
         </div>
         <div class="contact-grid reveal">
-            <?php if (!empty($S['contact_phone'])): ?>
-            <a href="tel:<?= htmlspecialchars($S['contact_phone']) ?>" class="contact-card">
-                <div class="contact-icon">📱</div>
-                <div class="contact-label">Phone</div>
-                <div class="contact-value"><?= htmlspecialchars($S['contact_phone']) ?></div>
-            </a>
-            <?php endif; ?>
-
             <?php if (!empty($S['contact_email'])): ?>
             <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="contact-card">
                 <div class="contact-icon">📧</div>
                 <div class="contact-label">Email</div>
                 <div class="contact-value"><?= htmlspecialchars($S['contact_email']) ?></div>
             </a>
-            <?php endif; ?>
-
-            <?php if (!empty($S['contact_line'])): ?>
-            <a href="https://line.me/R/ti/p/<?= htmlspecialchars($S['contact_line']) ?>" target="_blank" class="contact-card">
-                <div class="contact-icon">💚</div>
-                <div class="contact-label">LINE</div>
-                <div class="contact-value"><?= htmlspecialchars($S['contact_line']) ?></div>
-            </a>
-            <?php endif; ?>
-
-            <?php if (!empty($S['contact_facebook'])): ?>
-            <a href="<?= htmlspecialchars($S['contact_facebook']) ?>" target="_blank" class="contact-card">
-                <div class="contact-icon">📘</div>
-                <div class="contact-label">Facebook</div>
-                <div class="contact-value">Visit Page →</div>
-            </a>
-            <?php endif; ?>
-
-            <?php if (!empty($S['contact_address'])): ?>
-            <div class="contact-card contact-card-wide">
-                <div class="contact-icon">📍</div>
-                <div class="contact-label">Address</div>
-                <div class="contact-value"><?= nl2br(htmlspecialchars($S['contact_address'])) ?></div>
-            </div>
             <?php endif; ?>
         </div>
     </div>
@@ -292,17 +260,9 @@ for ($i = 1; $i <= 4; $i++) {
                 <div class="footer-tagline"><?= htmlspecialchars($S['footer_tagline'] ?? 'Premium Large Wall Clocks') ?></div>
             </div>
 
-            <?php if ($hasContact): ?>
+            <?php if (!empty($S['contact_email'])): ?>
             <div class="footer-contact-info">
-                <?php if (!empty($S['contact_phone'])): ?>
-                    <a href="tel:<?= htmlspecialchars($S['contact_phone']) ?>" class="footer-contact-item">📱 <?= htmlspecialchars($S['contact_phone']) ?></a>
-                <?php endif; ?>
-                <?php if (!empty($S['contact_email'])): ?>
-                    <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="footer-contact-item">📧 <?= htmlspecialchars($S['contact_email']) ?></a>
-                <?php endif; ?>
-                <?php if (!empty($S['contact_line'])): ?>
-                    <span class="footer-contact-item">💚 <?= htmlspecialchars($S['contact_line']) ?></span>
-                <?php endif; ?>
+                <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="footer-contact-item">📧 <?= htmlspecialchars($S['contact_email']) ?></a>
             </div>
             <?php endif; ?>
 
