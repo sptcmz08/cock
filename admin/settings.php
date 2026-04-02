@@ -200,6 +200,10 @@ function val($settings, $key) {
                         <label>📧 Email</label>
                         <input type="text" name="contact_email" class="form-control" value="<?= val($settings, 'contact_email') ?>" placeholder="info@example.com">
                     </div>
+                    <div class="form-group">
+                        <label>Contact Subtitle <small style="color:var(--gray);">(shown below the heading)</small></label>
+                        <input type="text" name="contact_subtitle" class="form-control" value="<?= val($settings, 'contact_subtitle') ?>" placeholder="Have questions about our collection?">
+                    </div>
                 </div>
             </div>
 

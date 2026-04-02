@@ -225,19 +225,27 @@ for ($i = 1; $i <= 4; $i++) {
 <!-- ====== Contact Section ====== -->
 <?php if ($hasContact): ?>
 <section class="contact-section" id="contact">
+    <div class="contact-bg-dots"></div>
     <div class="container">
-        <div class="products-header reveal" style="margin-bottom: 48px;">
-            <div class="section-badge">✦ Contact Us</div>
-            <h2 class="section-title">Get In <span>Touch</span></h2>
-        </div>
-        <div class="contact-grid reveal">
-            <?php if (!empty($S['contact_email'])): ?>
-            <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="contact-card">
-                <div class="contact-icon">📧</div>
-                <div class="contact-label">Email</div>
-                <div class="contact-value"><?= htmlspecialchars($S['contact_email']) ?></div>
+        <div class="contact-hero reveal">
+            <div class="contact-glow"></div>
+            <div class="contact-badge">✦ Contact Us</div>
+            <h2 class="contact-heading">Get In <span>Touch</span></h2>
+            <p class="contact-subtitle"><?= htmlspecialchars($S['contact_subtitle'] ?? "Have questions about our collection? We'd love to hear from you.") ?></p>
+            
+            <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="contact-email-card">
+                <div class="contact-email-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M22 4L12 13L2 4"/>
+                    </svg>
+                </div>
+                <div class="contact-email-info">
+                    <div class="contact-email-label">Email Us</div>
+                    <div class="contact-email-address"><?= htmlspecialchars($S['contact_email']) ?></div>
+                </div>
+                <div class="contact-email-arrow">→</div>
             </a>
-            <?php endif; ?>
         </div>
     </div>
 </section>
