@@ -72,9 +72,9 @@ for ($i = 1; $i <= 4; $i++) {
             <div class="brand-text"><?= htmlspecialchars($logoText) ?></div>
         </a>
         <ul class="navbar-nav" id="navMenu">
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#products">Products</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#hero"><?= htmlspecialchars($S['nav_home'] ?? 'Home') ?></a></li>
+            <li><a href="#products"><?= htmlspecialchars($S['nav_products'] ?? 'Products') ?></a></li>
+            <li><a href="#contact"><?= htmlspecialchars($S['nav_contact'] ?? 'Contact') ?></a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
             <span></span><span></span><span></span>
@@ -139,7 +139,7 @@ for ($i = 1; $i <= 4; $i++) {
             <p class="section-subtitle"><?= htmlspecialchars($S['section_subtitle'] ?? '') ?></p>
             
             <div class="filter-tabs">
-                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab active" data-filter="all"><?= htmlspecialchars($S['filter_all'] ?? 'All') ?></button>
                 <?php foreach ($categories as $cat): ?>
                     <button class="filter-tab" data-filter="<?= htmlspecialchars($cat['slug']) ?>"><?= htmlspecialchars($cat['name']) ?></button>
                 <?php endforeach; ?>
@@ -190,7 +190,7 @@ for ($i = 1; $i <= 4; $i++) {
                                     ฿<?= formatThaiPrice($p['price']) ?>
                                     <small>THB</small>
                                 </div>
-                                <span class="card-view-btn">View Details →</span>
+                                <span class="card-view-btn"><?= htmlspecialchars($S['card_btn_text'] ?? 'View Details →') ?></span>
                             </div>
                         </div>
                     </div>
@@ -216,7 +216,7 @@ for ($i = 1; $i <= 4; $i++) {
                 <span class="modal-price-label">THB</span>
             </div>
             <p class="modal-desc"></p>
-            <div class="modal-features-title">✦ Key Features</div>
+            <div class="modal-features-title"><?= htmlspecialchars($S['modal_features_title'] ?? '✦ Key Features') ?></div>
             <div class="modal-features"></div>
         </div>
     </div>
@@ -229,8 +229,8 @@ for ($i = 1; $i <= 4; $i++) {
     <div class="container">
         <div class="contact-hero reveal">
             <div class="contact-glow"></div>
-            <div class="contact-badge">✦ Contact Us</div>
-            <h2 class="contact-heading">Get In <span>Touch</span></h2>
+            <div class="contact-badge"><?= htmlspecialchars($S['contact_badge'] ?? '✦ Contact Us') ?></div>
+            <h2 class="contact-heading"><?= htmlspecialchars($S['contact_heading_1'] ?? 'Get In') ?> <span><?= htmlspecialchars($S['contact_heading_2'] ?? 'Touch') ?></span></h2>
             <p class="contact-subtitle"><?= htmlspecialchars($S['contact_subtitle'] ?? "Have questions about our collection? We'd love to hear from you.") ?></p>
             
             <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="contact-email-card">
@@ -272,17 +272,17 @@ for ($i = 1; $i <= 4; $i++) {
 
             <!-- Navigation Column -->
             <div class="footer-col">
-                <div class="footer-col-title">Navigation</div>
+                <div class="footer-col-title"><?= htmlspecialchars($S['footer_nav_title'] ?? 'Navigation') ?></div>
                 <ul class="footer-nav">
-                    <li><a href="#hero">Home</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#hero"><?= htmlspecialchars($S['nav_home'] ?? 'Home') ?></a></li>
+                    <li><a href="#products"><?= htmlspecialchars($S['nav_products'] ?? 'Products') ?></a></li>
+                    <li><a href="#contact"><?= htmlspecialchars($S['nav_contact'] ?? 'Contact') ?></a></li>
                 </ul>
             </div>
 
             <!-- Contact Column -->
             <div class="footer-col">
-                <div class="footer-col-title">Contact</div>
+                <div class="footer-col-title"><?= htmlspecialchars($S['footer_contact_title'] ?? 'Contact') ?></div>
                 <?php if (!empty($S['contact_email'])): ?>
                 <a href="mailto:<?= htmlspecialchars($S['contact_email']) ?>" class="footer-email-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

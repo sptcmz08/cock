@@ -204,6 +204,57 @@ function val($settings, $key) {
                         <label>Contact Subtitle <small style="color:var(--gray);">(shown below the heading)</small></label>
                         <input type="text" name="contact_subtitle" class="form-control" value="<?= val($settings, 'contact_subtitle') ?>" placeholder="Have questions about our collection?">
                     </div>
+                    <div class="form-group">
+                        <label>Contact Badge <small style="color:var(--gray);">(above heading)</small></label>
+                        <input type="text" name="contact_badge" class="form-control" value="<?= val($settings, 'contact_badge') ?>" placeholder="✦ Contact Us">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Contact Heading (Part 1)</label>
+                            <input type="text" name="contact_heading_1" class="form-control" value="<?= val($settings, 'contact_heading_1') ?>" placeholder="Get In">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Heading (Part 2 — highlight) <small style="color:var(--gold);">(gold)</small></label>
+                            <input type="text" name="contact_heading_2" class="form-control" value="<?= val($settings, 'contact_heading_2') ?>" placeholder="Touch">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation & UI Labels -->
+            <div class="settings-section">
+                <div class="settings-section-header">
+                    <h3>🏷 Navigation & UI Labels</h3>
+                </div>
+                <div class="settings-section-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nav: Home</label>
+                            <input type="text" name="nav_home" class="form-control" value="<?= val($settings, 'nav_home') ?>" placeholder="Home">
+                        </div>
+                        <div class="form-group">
+                            <label>Nav: Products</label>
+                            <input type="text" name="nav_products" class="form-control" value="<?= val($settings, 'nav_products') ?>" placeholder="Products">
+                        </div>
+                        <div class="form-group">
+                            <label>Nav: Contact</label>
+                            <input type="text" name="nav_contact" class="form-control" value="<?= val($settings, 'nav_contact') ?>" placeholder="Contact">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Filter "All" Button</label>
+                            <input type="text" name="filter_all" class="form-control" value="<?= val($settings, 'filter_all') ?>" placeholder="All">
+                        </div>
+                        <div class="form-group">
+                            <label>Card Button Text</label>
+                            <input type="text" name="card_btn_text" class="form-control" value="<?= val($settings, 'card_btn_text') ?>" placeholder="View Details →">
+                        </div>
+                        <div class="form-group">
+                            <label>Features Label (Modal)</label>
+                            <input type="text" name="modal_features_title" class="form-control" value="<?= val($settings, 'modal_features_title') ?>" placeholder="✦ Key Features">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -221,6 +272,16 @@ function val($settings, $key) {
                         <div class="form-group">
                             <label>Copyright</label>
                             <input type="text" name="footer_copyright" class="form-control" value="<?= val($settings, 'footer_copyright') ?>">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Navigation Column Title</label>
+                            <input type="text" name="footer_nav_title" class="form-control" value="<?= val($settings, 'footer_nav_title') ?>" placeholder="Navigation">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Column Title</label>
+                            <input type="text" name="footer_contact_title" class="form-control" value="<?= val($settings, 'footer_contact_title') ?>" placeholder="Contact">
                         </div>
                     </div>
                 </div>
