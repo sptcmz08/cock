@@ -27,8 +27,8 @@ $logoImage = $S['logo_image'] ?? '';
 $siteTitle = $S['site_title'] ?? 'CHRONOS — Premium Watch Gallery';
 $metaDesc = $S['meta_description'] ?? '';
 
-function formatThaiPrice($price) {
-    return number_format($price, 0, '.', ',');
+function formatPrice($price) {
+    return number_format($price, 2, '.', ',');
 }
 
 // Check if any contact info exists
@@ -192,8 +192,8 @@ for ($i = 1; $i <= 4; $i++) {
                             <p class="card-desc"><?= htmlspecialchars($p['description']) ?></p>
                             <div class="card-footer">
                                 <div class="card-price">
-                                    ฿<?= formatThaiPrice($p['price']) ?>
-                                    <small>THB</small>
+                                    $<?= formatPrice($p['price']) ?>
+                                    <small>USD</small>
                                 </div>
                                 <span class="card-view-btn"><?= htmlspecialchars($S['card_btn_text'] ?? 'View Details →') ?></span>
                             </div>
@@ -219,8 +219,8 @@ for ($i = 1; $i <= 4; $i++) {
             <div class="modal-brand"></div>
             <h2 class="modal-name"></h2>
             <div class="modal-price-box">
-                <span class="modal-price">฿0</span>
-                <span class="modal-price-label">THB</span>
+                <span class="modal-price">$0</span>
+                <span class="modal-price-label">USD</span>
             </div>
             <p class="modal-desc"></p>
             <div class="modal-features-title"><?= htmlspecialchars($S['modal_features_title'] ?? '✦ Key Features') ?></div>

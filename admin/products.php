@@ -99,7 +99,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
                                         <span class="type-badge" style="color:var(--gray);">— None</span>
                                     <?php endif; ?>
                                 </td>
-                                <td style="color: var(--gold); font-weight: 600;">฿<?= number_format($p['price'], 0, '.', ',') ?></td>
+                                <td style="color: var(--gold); font-weight: 600;">$<?= number_format($p['price'], 2, '.', ',') ?></td>
                                 <td><?= $p['is_featured'] ? '⭐' : '—' ?></td>
                                 <td>
                                     <div class="actions">
@@ -138,7 +138,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY sort_order ASC, id A
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Price (THB) <span class="required">*</span></label>
+                        <label>Price (USD) <span class="required">*</span></label>
                         <input type="number" name="price" id="formPrice" class="form-control" placeholder="0.00" step="0.01" min="0" required>
                     </div>
                     <div class="form-group">
